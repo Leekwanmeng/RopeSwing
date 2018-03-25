@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class RopeController : MonoBehaviour {
 
+	/*Public Fields*/
 	public GameObject ropeShooter;
 	public LineRenderer lineRenderer;
 
+	/*Private Fields*/
 	private SpringJoint2D rope;
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown(0)) {
-			Fire();
+			ShootRope();
 		}
 	}
 
 	void FixedUpdate() {
 	}
 
+	/*
+	* Updates after all update functions called
+	* Adds LineRenderer to existing rope (from player to anchor)
+	*/
 	void LateUpdate() {
 		if (rope != null) {
 			lineRenderer.enabled = true;
@@ -30,19 +36,20 @@ public class RopeController : MonoBehaviour {
 		}
 	}
 
-	void Fire() {
+
+	/*
+	* Raycasts to clicked position if it collides with a wall
+	* Adds new rope if successful while deleting previous rope
+	*/
+	void ShootRope() {
 		Vector2 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		Vector2 position = ropeShooter.transform.position;
 		Vector2 direction = mousePosition - position;
-		print("Mouse position: " + mousePosition);
-		print("position: " + position);
-		print("Direction: " + direction);
-
 
 		RaycastHit2D hit = Physics2D.Raycast (position, direction, 
 			Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
-		Debug.DrawLine(position, hit.point, Color.cyan, 100f);
-		print(hit.point);
+		// Debug.DrawLine(position, hit.point, Color.cyan, 100f);
+		// print(hit.point);
 
 		if (hit.collider != null) {
 			print("fired");
