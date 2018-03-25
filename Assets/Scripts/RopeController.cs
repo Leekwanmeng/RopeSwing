@@ -10,7 +10,7 @@ public class RopeController : MonoBehaviour {
 
 	/*Private Fields*/
 	private SpringJoint2D rope;
-	private Vector2 aimPosition;
+	private Vector2 touchPosition;
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
@@ -18,13 +18,7 @@ public class RopeController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown(0)) {
-			if (!ropeActive) {
-				ShootRope();
-			} else {
-				DestroyRope();
-			}
-		}
+		TouchDetection();
 	}
 
 	// Update per physics frame
@@ -54,24 +48,50 @@ public class RopeController : MonoBehaviour {
 
 
 	/*
+	* Detects Touches on mobile phone
+	* Creates rope on touch if no rope exists, else removes current rope
+	*/
+	void TouchDetection() {
+		if (Input.touchCount > 0) {
+			Touch touch = Input.GetTouch(0);
+			if (touch.phase == TouchPhase.Began ||
+				touch.phase == TouchPhase.Stationary ||
+				touch.phase == TouchPhase.Moved) {
+
+				touchPosition = Camera.main.ScreenToWorldPoint
+				(new Vector2(touch.position.x, touch.position.y));
+				// TODO: dotted line
+
+
+			} else if (touch.phase == TouchPhase.Ended) {
+				if (!ropeActive) {
+					touchPosition = Camera.main.ScreenToWorldPoint
+					(new Vector2(touch.position.x, touch.position.y));
+					ShootRope(touchPosition);
+				} else {
+					DestroyRope();
+				}
+			}
+		}
+	}
+
+
+	/*
 	* Raycasts to clicked position if it collides with a wall
 	* Adds new rope if successful while deleting previous rope
 	*/
-	void ShootRope() {
-		Vector2 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		Vector2 position = gameObject.transform.position;
-		Vector2 direction = mousePosition - position;
+	void ShootRope(Vector2 touchPosition) {
+		// Vector2 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		Vector2 playerPosition = gameObject.transform.position;
+		Vector2 direction = touchPosition - playerPosition;
 
-		RaycastHit2D hit = Physics2D.Raycast (position, direction, 
+		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
 			Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
-		// Debug.DrawLine(position, hit.point, Color.cyan, 100f);
-		// print(hit.point);
 
 		if (hit.collider != null) {
-			print("fired");
 			rope = gameObject.AddComponent<SpringJoint2D>();
 			rope.enableCollision = false;
-			rope.frequency = 0.5f;
+			rope.frequency = 0.2f;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			ropeActive = true;
@@ -83,30 +103,8 @@ public class RopeController : MonoBehaviour {
 	* Destroys rope if exists
 	*/
 	void DestroyRope() {
-		GameObject.DestroyImmediate(rope);
+		GameObject.Destroy(rope);
 		ropeActive = false;
 	}
-
-	void TouchDetection() {
-		if (Input.touchCount > 0) {
-			if (!ropeActive) {
-				Touch touch = Input.GetTouch(0);
-				switch (touch.phase) {
-					case TouchPhase.Began:
-						aimPosition = touch.position;
-						break;
-					case TouchPhase.Moved:
-						aimPosition = touch.position;
-						break;
-					case TouchPhase>Ended:
-						// Draw line
-						break;
-				}
-			} else {
-				DestroyRope();
-			}
-		}
-	}
-
 
 }
