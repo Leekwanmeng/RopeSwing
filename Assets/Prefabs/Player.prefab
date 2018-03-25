@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4059918844885872}
   - component: {fileID: 212107616203572912}
   - component: {fileID: 50705846331848910}
-  - component: {fileID: 114226080213904944}
   - component: {fileID: 114777010972455242}
   - component: {fileID: 120754690892108498}
+  - component: {fileID: 114191107584651732}
+  - component: {fileID: 114226080213904944}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -64,6 +65,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &114191107584651732
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1451649781215020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d775f82fb9924c641b12af8a9c73d5ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forcetoAdd: 100
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,7 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6469b77c8ef284eac6a60a295c3b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ropeShooter: {fileID: 0}
   lineRenderer: {fileID: 0}
   ropeActive: 0
 --- !u!120 &120754690892108498

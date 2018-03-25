@@ -10,6 +10,7 @@ public class RopeController : MonoBehaviour {
 
 	/*Private Fields*/
 	private SpringJoint2D rope;
+	private Vector2 aimPosition;
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
@@ -84,6 +85,27 @@ public class RopeController : MonoBehaviour {
 	void DestroyRope() {
 		GameObject.DestroyImmediate(rope);
 		ropeActive = false;
+	}
+
+	void TouchDetection() {
+		if (Input.touchCount > 0) {
+			if (!ropeActive) {
+				Touch touch = Input.GetTouch(0);
+				switch (touch.phase) {
+					case TouchPhase.Began:
+						aimPosition = touch.position;
+						break;
+					case TouchPhase.Moved:
+						aimPosition = touch.position;
+						break;
+					case TouchPhase>Ended:
+						// Draw line
+						break;
+				}
+			} else {
+				DestroyRope();
+			}
+		}
 	}
 
 
