@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public float forcetoAdd = 100;
-
+	/*Public Fields*/
+	public float forceToAdd = 20;
+	public float tiltThreshold = 0.4f;
 
 	void Start () {
 		//gives it force
-		GetComponent<Rigidbody2D>().velocity = Vector2.up * 10;
-
+		GetComponent<Rigidbody2D>().velocity = Vector2.up * 5;
 	}
 
 
 	void Update () {
+		tiltForce();
+	}
 
-		if (Input.GetKey (KeyCode.A))  
-			GetComponent<Rigidbody2D> ().AddForce(-Vector2.right*forcetoAdd);
-
-		if (Input.GetKey (KeyCode.D))  
-			GetComponent<Rigidbody2D> ().AddForce(Vector2.right*forcetoAdd);
-	}	
+	void tiltForce() {
+		if (Input.acceleration.x > tiltThreshold) {
+			GetComponent<Rigidbody2D>().AddForce(Vector2.right*forceToAdd);
+		}
+		else if (Input.acceleration.x < -tiltThreshold) { 
+			GetComponent<Rigidbody2D>().AddForce(Vector2.left*forceToAdd);
+		}
+	}
 }

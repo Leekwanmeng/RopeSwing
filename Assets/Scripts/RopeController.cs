@@ -9,7 +9,7 @@ public class RopeController : MonoBehaviour {
 	public bool ropeActive;
 
 	/*Private Fields*/
-	private SpringJoint2D rope;
+	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 
 	void Start() {
@@ -89,9 +89,10 @@ public class RopeController : MonoBehaviour {
 			Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
-			rope = gameObject.AddComponent<SpringJoint2D>();
+			rope = gameObject.AddComponent<DistanceJoint2D>();
 			rope.enableCollision = false;
-			rope.frequency = 0.2f;
+			rope.distance = hit.distance;
+			rope.maxDistanceOnly = true;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			ropeActive = true;

@@ -13,8 +13,8 @@ public class TestTouch : MonoBehaviour {
         Touch touch = Input.GetTouch(0);
 
         //Update the Text on the screen depending on current position of the touch each frame
-        m_Text1.text = "Touch Position : " + touch.position;
-        m_Text2.text = "World cam : " + Camera.main.ScreenToWorldPoint
+        m_Text1.text = "Tilt: " + Input.acceleration;
+        m_Text2.text = "Touch: " + Camera.main.ScreenToWorldPoint
 				(new Vector2(touch.position.x, touch.position.y));
     }
 }
