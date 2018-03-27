@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 using UnityEngine;
 
-public class RopeController : MonoBehaviour {
+public class RopeController : NetworkBehaviour {
 
 	/*Public Fields*/
 	public LineRenderer lineRenderer;
@@ -12,12 +13,19 @@ public class RopeController : MonoBehaviour {
 	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 
+	public override void OnStartLocalPlayer() {
+         Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
+    }
+
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isLocalPlayer) {
+			return;
+		}
 		TouchDetection();
 	}
 
