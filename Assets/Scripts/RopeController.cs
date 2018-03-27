@@ -90,7 +90,7 @@ public class RopeController : MonoBehaviour {
 
 		if (hit.collider != null) {
 			rope = gameObject.AddComponent<DistanceJoint2D>();
-			rope.enableCollision = false;
+			rope.enableCollision = true;
 			rope.distance = hit.distance;
 			rope.maxDistanceOnly = true;
 			rope.connectedAnchor = hit.point;

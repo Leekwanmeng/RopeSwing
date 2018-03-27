@@ -15,10 +15,14 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void Update () {
-		tiltForce();
+		RopeController ropeController = gameObject.GetComponent<RopeController>();
+		if (ropeController.ropeActive) {
+			tiltForce();
+		}
 	}
 
 	void tiltForce() {
+
 		if (Input.acceleration.x > tiltThreshold) {
 			GetComponent<Rigidbody2D>().AddForce(Vector2.right*forceToAdd);
 		}
