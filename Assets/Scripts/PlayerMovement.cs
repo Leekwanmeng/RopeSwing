@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
 	/*Public Fields*/
-	public float forceToAdd = 20;
+	public float forceToAdd = 2f;
 	public float tiltThreshold = 0.4f;
 
 	/*Private fields*/

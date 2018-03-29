@@ -35,6 +35,9 @@ public class SmoothCamera : MonoBehaviour {
 		}
 	}
 
+	/*
+	* Assigns players to their respective cameras
+	*/
 	public void setPlayer(GameObject player) {
 		this.player = player;
 	}
