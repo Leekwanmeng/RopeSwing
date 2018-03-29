@@ -10,6 +10,7 @@ public class RopeController : NetworkBehaviour {
 	public bool ropeActive;
 
 	/*Private Fields*/
+	private Animator animator;
 	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 
@@ -19,6 +20,7 @@ public class RopeController : NetworkBehaviour {
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
+		animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -49,8 +51,10 @@ public class RopeController : NetworkBehaviour {
 			lineRenderer.positionCount = 2;
 			lineRenderer.SetPosition(0, gameObject.transform.position);
 			lineRenderer.SetPosition(1, rope.connectedAnchor);
+			animator.SetBool("ropeActive", true);
 		} else {
 			lineRenderer.enabled = false;
+			animator.SetBool("ropeActive", false);
 		}
 	}
 
