@@ -9,11 +9,12 @@ public class PlayerMovement : MonoBehaviour {
 	public float tiltThreshold = 0.4f;
 	public float maxSpeed = 3f;
 	public float magnitude;
-	public Vector2 velocity;
 
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
+	private Vector2 velocity;
+	private bool facingRight = true;
 
 	void Start () {
 		//gives it upward force
@@ -24,14 +25,16 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void Update () {
+		velocity = rb2d.velocity;
+		magnitude = velocity.magnitude;
 		if (ropeController.ropeActive && magnitude < maxSpeed) {
 			tiltForce();
 		}
+		checkPlayerDirection();
 	}
 
 	void FixedUpdate() {
-		velocity = rb2d.velocity;
-		magnitude = velocity.magnitude;
+		
 	}
 
 	/*
@@ -47,4 +50,25 @@ public class PlayerMovement : MonoBehaviour {
 		} 
 
 	}
+
+	/*
+	* Checks player's horizontal movement and determines if player should flip
+	*/
+	void checkPlayerDirection() {
+		if (velocity.x > 0 && !facingRight) {
+			flip();
+		} else if (velocity.x < 0 && facingRight) {
+			flip();
+		}
+	}
+
+	/*
+	* Flips player's transform
+	*/
+	void flip() {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
 }
