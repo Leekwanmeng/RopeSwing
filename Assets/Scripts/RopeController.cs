@@ -99,13 +99,12 @@ public class RopeController : NetworkBehaviour {
 		Vector2 direction = touchPosition - playerPosition;
 
 		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
-			Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
+							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
 			rope = gameObject.AddComponent<DistanceJoint2D>();
 			rope.enableCollision = true;
 			rope.distance = hit.distance;
-			// rope.maxDistanceOnly = true;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			ropeActive = true;

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
+	private float distanceToGround = 1.4f;
 	private Vector2 velocity;
 	private bool facingRight = true;
 
@@ -24,7 +25,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		lockRotation();
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
 		if (ropeController.ropeActive && magnitude < maxSpeed) {
@@ -36,6 +36,11 @@ public class PlayerMovement : MonoBehaviour {
 	// Update per physics frame
 	void FixedUpdate() {
 		
+	}
+
+	// Last Update
+	void LateUpdate() {
+		lockPlayerRotation();
 	}
 
 	/*
@@ -56,9 +61,9 @@ public class PlayerMovement : MonoBehaviour {
 	* Checks player's horizontal movement and determines if player should flip
 	*/
 	void checkPlayerDirection() {
-		if (velocity.x >= 0 && !facingRight) {
+		if (velocity.x > 0.05f && !facingRight) {
 			flip();
-		} else if (velocity.x < 0 && facingRight) {
+		} else if (velocity.x < -0.05f && facingRight) {
 			flip();
 		}
 	}
@@ -76,7 +81,24 @@ public class PlayerMovement : MonoBehaviour {
     /*
 	* Locks player's rotation
 	*/
-    void lockRotation() {
+    void lockPlayerRotation() {
     	transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+    }
+
+
+    /*
+	* Checks if player is grounded
+	* Vertical raycast downward to "Grund" layer
+	*
+	* @return true is grounded
+	*/
+    bool isGrounded() {
+    	RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 
+    						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
+    	// Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
+    	if (hit.collider != null) {
+        	return true;
+    	}
+    	return false;
     }
 }
