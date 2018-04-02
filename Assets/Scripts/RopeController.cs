@@ -72,7 +72,6 @@ public class RopeController : NetworkBehaviour {
 
 				touchPosition = Camera.main.ScreenToWorldPoint
 				(new Vector2(touch.position.x, touch.position.y));
-				// TODO: dotted line
 
 
 			} else if (touch.phase == TouchPhase.Ended) {
@@ -91,6 +90,8 @@ public class RopeController : NetworkBehaviour {
 	/*
 	* Raycasts to clicked position if it collides with a wall
 	* Adds new rope if successful while deleting previous rope
+	* 
+	* @param Player touch position on mobile screen
 	*/
 	void ShootRope(Vector2 touchPosition) {
 		// Vector2 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
@@ -104,7 +105,7 @@ public class RopeController : NetworkBehaviour {
 			rope = gameObject.AddComponent<DistanceJoint2D>();
 			rope.enableCollision = true;
 			rope.distance = hit.distance;
-			rope.maxDistanceOnly = true;
+			// rope.maxDistanceOnly = true;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			ropeActive = true;
