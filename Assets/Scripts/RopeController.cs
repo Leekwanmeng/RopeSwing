@@ -10,6 +10,7 @@ public class RopeController : NetworkBehaviour {
 	public bool ropeActive;
 
 	/*Private Fields*/
+	private Animator animator;
 	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 
@@ -19,6 +20,7 @@ public class RopeController : NetworkBehaviour {
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
+		animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -49,8 +51,10 @@ public class RopeController : NetworkBehaviour {
 			lineRenderer.positionCount = 2;
 			lineRenderer.SetPosition(0, gameObject.transform.position);
 			lineRenderer.SetPosition(1, rope.connectedAnchor);
+			animator.SetBool("ropeActive", true);
 		} else {
 			lineRenderer.enabled = false;
+			animator.SetBool("ropeActive", false);
 		}
 	}
 
@@ -68,7 +72,6 @@ public class RopeController : NetworkBehaviour {
 
 				touchPosition = Camera.main.ScreenToWorldPoint
 				(new Vector2(touch.position.x, touch.position.y));
-				// TODO: dotted line
 
 
 			} else if (touch.phase == TouchPhase.Ended) {
@@ -87,6 +90,8 @@ public class RopeController : NetworkBehaviour {
 	/*
 	* Raycasts to clicked position if it collides with a wall
 	* Adds new rope if successful while deleting previous rope
+	* 
+	* @param Player touch position on mobile screen
 	*/
 	void ShootRope(Vector2 touchPosition) {
 		// Vector2 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
@@ -94,13 +99,12 @@ public class RopeController : NetworkBehaviour {
 		Vector2 direction = touchPosition - playerPosition;
 
 		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
-			Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
+							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
 			rope = gameObject.AddComponent<DistanceJoint2D>();
 			rope.enableCollision = true;
 			rope.distance = hit.distance;
-			rope.maxDistanceOnly = true;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			ropeActive = true;
