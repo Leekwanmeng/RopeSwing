@@ -635,9 +635,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: f21f9d84-9019-4d14-a72d-74ec618f9ce2
+  cloudProjectId: a64c6fd3-aaf9-4fab-9e0d-8dcf1fe38b2b
   projectName: RopeSwing
-  organizationId: kwanima
+  organizationId: edwincxm
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
