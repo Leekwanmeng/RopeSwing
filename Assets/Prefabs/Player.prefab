@@ -67,7 +67,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &60610729804963916
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -85,7 +85,7 @@ PolygonCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.1875, y: 2.5}
-    newSize: {x: 1.25, y: 2.90625}
+    newSize: {x: 1.1875, y: 2.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceToAdd: 20
   tiltThreshold: 0.4
+  maxSpeed: 5
+  magnitude: 0
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,13 +316,13 @@ SpriteRenderer:
   m_SortingLayerID: 485576905
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9a66da42891d01f4e943bda7a3dd2384, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3eb6d2296c7685045a242de1d6d63dad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.25, y: 2.90625}
+  m_Size: {x: 1.1875, y: 2.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0

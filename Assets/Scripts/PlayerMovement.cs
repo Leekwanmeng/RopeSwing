@@ -17,14 +17,14 @@ public class PlayerMovement : MonoBehaviour {
 	private bool facingRight = true;
 
 	void Start () {
-		//gives it upward force
 		rb2d = GetComponent<Rigidbody2D>();
-		rb2d.velocity = Vector2.up * 5;
+		rb2d.velocity = Vector2.up * 5;		//gives it upward force
 		ropeController = gameObject.GetComponent<RopeController>();
 	}
 
-
+	// Update is called once per frame
 	void Update () {
+		lockRotation();
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
 		if (ropeController.ropeActive && magnitude < maxSpeed) {
@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
 		checkPlayerDirection();
 	}
 
+	// Update per physics frame
 	void FixedUpdate() {
 		
 	}
@@ -55,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
 	* Checks player's horizontal movement and determines if player should flip
 	*/
 	void checkPlayerDirection() {
-		if (velocity.x > 0 && !facingRight) {
+		if (velocity.x >= 0 && !facingRight) {
 			flip();
 		} else if (velocity.x < 0 && facingRight) {
 			flip();
@@ -70,5 +71,12 @@ public class PlayerMovement : MonoBehaviour {
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    /*
+	* Locks player's rotation
+	*/
+    void lockRotation() {
+    	transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
 }
