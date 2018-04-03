@@ -173,6 +173,10 @@ public class TryRopeController : NetworkBehaviour {
 	}
 
 
+	/*
+	* Client method to check for rope
+	* Calls corresponding Client -> Server methods to update ropeActive boolean
+	*/
 	[Client]
 	void ifRopeActive() {
 		if (rope != null) {
@@ -182,16 +186,23 @@ public class TryRopeController : NetworkBehaviour {
 		}
 	}
 
+	/*
+	* Command methods to update ropeActive and send data to server
+	*/
 	[Command]
 	void CmdRopeActive() {
 		ropeActive = true;
 	}
-
 	[Command]
 	void CmdRopeNotActive() {
 		ropeActive = false;
 	}
 
+
+
+	/*
+	* Swinging Player Animation
+	*/
 	void animateSwing() {
 		if (ropeActive) {
 			animator.SetBool("ropeActive", true);

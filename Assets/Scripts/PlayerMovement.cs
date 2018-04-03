@@ -14,7 +14,7 @@ public class PlayerMovement : NetworkBehaviour {
 	public float tiltThreshold = 0.4f;
 	public float maxSpeed = 5f;
 	public float magnitude;
-	[SyncVar (hook = "flipSprite")]
+	[SyncVar]
 	public bool facingRight;
 
 	/*Private fields*/
@@ -78,6 +78,7 @@ public class PlayerMovement : NetworkBehaviour {
 		movement();
 
 		checkPlayerDirection();
+		ifFacingRight();
 	}
 
 	// Update per physics frame
@@ -126,15 +127,27 @@ public class PlayerMovement : NetworkBehaviour {
 	[Client]
 	public void checkPlayerDirection() {
 		if (velocity.x > 0.1f && transform.localScale.x < 0) {
-			facingRight = !facingRight;
+			CmdFlip();
 		} else if (velocity.x < -0.1f && transform.localScale.x > 0) {
-			facingRight = !facingRight;
+			CmdFlip();
+		}
+	}
+
+	[Command]
+	void CmdFlip() {
+		facingRight = !facingRight;
+	}
+
+	void ifFacingRight() {
+		if (velocity.x > 0.1f && !facingRight) {
+			flipSprite();
+		} else if (velocity.x < -0.1f && facingRight) {
+			flipSprite();
 		}
 	}
 
 
-    public void flipSprite(bool isRight) {
-    	facingRight = isRight;
+    public void flipSprite() {
 		Vector3 theScale = transform.localScale;
 	    theScale.x *= -1;
 	    transform.localScale = theScale;
