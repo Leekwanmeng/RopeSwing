@@ -14,3 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OptionMenu.unity
     guid: 37e948cb28324e64ca73b70e93bdb3da
+  - enabled: 1
+    path: Assets/Scenes/NetworkMenu.unity
+    guid: 1c14234f5ce18894887567171fba24f1

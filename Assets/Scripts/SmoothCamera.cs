@@ -42,7 +42,11 @@ public class SmoothCamera : MonoBehaviour {
 		this.player = player;
 	}
 
-
+    //added a get method for testing
+    public GameObject getPlayer()
+    {
+        return this.player;
+    }
 
 
 
