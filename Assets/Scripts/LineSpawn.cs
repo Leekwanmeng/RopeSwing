@@ -17,6 +17,7 @@ public class LineSpawn : NetworkBehaviour {
 	void Start () {
 		lineRenderer = this.GetComponent<LineRenderer>();
 		lineRenderer.positionCount = 2;
+		lineRenderer.enabled = true;
 	}
 	
 	// Update is called once per frame
@@ -28,9 +29,9 @@ public class LineSpawn : NetworkBehaviour {
 	* Enables LineRenderer
 	*/
 	[ClientRpc]
-	void RpcRenderRope() {	
-		lineRenderer.SetPosition(0, startPosition);
-		lineRenderer.SetPosition(1, endPosition);
+	void RpcRenderRope(Vector2 startPos, Vector2 endPos) {	
+		lineRenderer.SetPosition(0, startPos);
+		lineRenderer.SetPosition(1, endPos);
 		lineRenderer.enabled = true;
 	}
 
@@ -44,7 +45,7 @@ public class LineSpawn : NetworkBehaviour {
 
 	public void RenderRope() {
 		if (isServer) {
-			RpcRenderRope();
+			RpcRenderRope(startPosition, endPosition);
 		}
 	}
 

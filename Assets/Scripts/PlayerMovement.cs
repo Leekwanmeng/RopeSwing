@@ -9,7 +9,7 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float forceToAdd = 0.04f;
+	public float forceToAdd = 4f;
 	public float tiltThreshold = 0.4f;
 	public float maxSpeed = 3f;
 	public float magnitude;
