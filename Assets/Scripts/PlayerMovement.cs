@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
+
+
 
 public class PlayerMovement : NetworkBehaviour {
 
@@ -16,7 +19,46 @@ public class PlayerMovement : NetworkBehaviour {
 	private Rigidbody2D rb2d = null;
 	private float distanceToGround = 1.4f;
 	private Vector2 velocity;
-	private bool facingRight = true;
+    //made public for testing
+    public bool facingRight = true;
+
+
+
+    //Constructors for testing
+
+    public void Construct()
+    {
+    }
+
+
+    public void ConstructCheckDirection(Vector2 vel, bool right)
+    {
+        facingRight = right;
+        velocity = vel;
+
+    }
+
+    public void SetDirection(bool right)
+    {
+        facingRight = right;
+    }
+
+    public void SetPosition(Vector3 myVec)
+    {
+        transform.position = myVec;
+    }
+
+
+
+    //Enumerator for testing
+
+    public IEnumerator GetEnumerator()
+    {
+        return null;
+        //fix this later
+    }
+
+
 
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
@@ -61,7 +103,7 @@ public class PlayerMovement : NetworkBehaviour {
 	/*
 	* Checks player's horizontal movement and determines if player should flip
 	*/
-	void checkPlayerDirection() {
+	public void checkPlayerDirection() {
 		if (velocity.x > 0.05f && !facingRight) {
 			flip();
 		} else if (velocity.x < -0.05f && facingRight) {
@@ -72,12 +114,24 @@ public class PlayerMovement : NetworkBehaviour {
 	/*
 	* Flips player's transform
 	*/
-	void flip() {
+	public void flip() {
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+
+    /*
+    public void flipMock(Transform Target)
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = Target.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+    */
+
 
     /*
 	* Locks player's rotation
@@ -93,7 +147,7 @@ public class PlayerMovement : NetworkBehaviour {
 	*
 	* @return true is grounded
 	*/
-    bool isGrounded() {
+    public bool isGrounded() {
     	RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
     	// Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);

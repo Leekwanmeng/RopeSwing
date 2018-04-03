@@ -41,4 +41,9 @@ public class SmoothCamera : MonoBehaviour {
 	public void setPlayer(GameObject player) {
 		this.player = player;
 	}
+
+
+
+
+
 }
