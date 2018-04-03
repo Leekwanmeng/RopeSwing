@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4773115538840306}
   - component: {fileID: 212394962218713132}
-  - component: {fileID: 61989709489472358}
+  - component: {fileID: 60956048514342050}
   m_Layer: 10
   m_Name: RockBig
   m_TagString: Foreground
@@ -41,8 +41,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61989709489472358
-BoxCollider2D:
+--- !u!60 &60956048514342050
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -63,9 +63,14 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.03125, y: 1.875}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.671875, y: 0.9375}
+      - {x: -1.015625, y: 0.875}
+      - {x: -1.015625, y: -0.9375}
+      - {x: 1.015625, y: -0.9375}
+      - {x: 1.015625, y: 0.53125}
+      - {x: 0.828125, y: 0.9375}
 --- !u!212 &212394962218713132
 SpriteRenderer:
   m_ObjectHideFlags: 1

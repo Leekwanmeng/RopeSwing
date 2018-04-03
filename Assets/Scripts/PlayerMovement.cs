@@ -9,9 +9,10 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float forceToAdd = 4f;
+	public float swingForce = 10f;
+	public float walkForce = 5f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 3f;
+	public float maxSpeed = 4f;
 	public float magnitude;
 
 	/*Private fields*/
@@ -59,7 +60,6 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
 
-
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
@@ -68,11 +68,12 @@ public class PlayerMovement : NetworkBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (!isLocalPlayer) {
+			return;
+		}
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
-		if (ropeController.ropeActive && magnitude < maxSpeed) {
-			tiltForce();
-		}
+		movement();
 		checkPlayerDirection();
 	}
 
@@ -87,15 +88,31 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 	/*
-	* Uses the mobile's gyroscope to detect tilting
-	* Adds force to player if sufficient tilt AND player is on the rope
+	* Called to determine if player can move
+	* Assigns type of movement
 	*/
-	void tiltForce() {
+	void movement() {
+		if (ropeController.ropeActive && magnitude < maxSpeed) {
+			tiltForce(swingForce);
+		} else if (!ropeController.ropeActive 
+				&& isGrounded() && magnitude < maxSpeed) {
+			tiltForce(walkForce);
+		}
+	}
+
+
+	/*
+	* Uses the mobile's gyroscope to detect tilting
+	* Applies force to RigidBody2D accordingly
+	*
+	* @param Type and value of force
+	*/
+	void tiltForce(float force) {
 		if (Input.acceleration.x > tiltThreshold) {
-			GetComponent<Rigidbody2D>().AddForce(Vector2.right*forceToAdd);
+			GetComponent<Rigidbody2D>().AddForce(Vector2.right*force);
 		}
 		else if (Input.acceleration.x < -tiltThreshold) { 
-			GetComponent<Rigidbody2D>().AddForce(Vector2.left*forceToAdd);
+			GetComponent<Rigidbody2D>().AddForce(Vector2.left*force);
 		} 
 
 	}
