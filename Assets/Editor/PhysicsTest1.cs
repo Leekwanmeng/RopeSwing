@@ -53,7 +53,7 @@ namespace Tests
 
 
             playerScript.SetDirection(true);
-            playerScript.flip();
+            playerScript.flipSprite(true);
 
             Assert.AreEqual(false, playerScript.facingRight);
 

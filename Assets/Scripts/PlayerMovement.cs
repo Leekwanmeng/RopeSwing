@@ -9,51 +9,45 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 500f;
-	public float walkForce = 30f;
+	public float swingForce = 100f;
+	public float walkForce = 5f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 30f;
+	public float maxSpeed = 5f;
 	public float magnitude;
+	[SyncVar (hook = "flipSprite")]
+	public bool facingRight;
 
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
 	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
-    //made public for testing
-    public bool facingRight = true;
-
-
+ 
 
     // TESTING
 
-    public void Construct()
-    {
+    public void Construct() {
     }
 
 
-    public void ConstructCheckDirection(Vector2 vel, bool right)
-    {
+    public void ConstructCheckDirection(Vector2 vel, bool right) {
         facingRight = right;
         velocity = vel;
 
     }
 
-    public void SetDirection(bool right)
-    {
+    public void SetDirection(bool right) {
         facingRight = right;
     }
 
-    public void SetPosition(Vector3 myVec)
-    {
+    public void SetPosition(Vector3 myVec) {
         transform.position = myVec;
     }
 
 
     //Enumerator for testing
 
-    public IEnumerator GetEnumerator()
-    {
+    public IEnumerator GetEnumerator() {
         return null;
         //fix this later
     }
@@ -71,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour {
 		rb2d = GetComponent<Rigidbody2D>();
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
 		ropeController = gameObject.GetComponent<RopeController>();
+		facingRight = true;
 	}
 
 	// Update is called once per frame
@@ -81,6 +76,7 @@ public class PlayerMovement : NetworkBehaviour {
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
 		movement();
+
 		checkPlayerDirection();
 	}
 
@@ -127,22 +123,21 @@ public class PlayerMovement : NetworkBehaviour {
 	/*
 	* Checks player's horizontal movement and determines if player should flip
 	*/
+	[Client]
 	public void checkPlayerDirection() {
-		if (velocity.x > 0.05f && !facingRight) {
-			flip();
-		} else if (velocity.x < -0.05f && facingRight) {
-			flip();
+		if (velocity.x > 0.1f && transform.localScale.x < 0) {
+			facingRight = !facingRight;
+		} else if (velocity.x < -0.1f && transform.localScale.x > 0) {
+			facingRight = !facingRight;
 		}
 	}
 
-	/*
-	* Flips player's transform
-	*/
-	public void flip() {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+
+    public void flipSprite(bool isRight) {
+    	facingRight = isRight;
+		Vector3 theScale = transform.localScale;
+	    theScale.x *= -1;
+	    transform.localScale = theScale;
     }
 
 

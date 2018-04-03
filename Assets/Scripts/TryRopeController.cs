@@ -35,6 +35,7 @@ public class TryRopeController : NetworkBehaviour {
 			return;
 		}
 		TouchDetection();
+		ifRopeActive();
 		// CmdRenderRope();
 	}
 
@@ -126,11 +127,12 @@ public class TryRopeController : NetworkBehaviour {
 
 
 			} else if (touch.phase == TouchPhase.Ended) {
-				if (!ropeActive) {
+				bool grounded = gameObject.GetComponent<PlayerMovement>().isGrounded();
+				if (!ropeActive && grounded) {
 					touchPosition = Camera.main.ScreenToWorldPoint
 					(new Vector2(touch.position.x, touch.position.y));
 					ShootRope(touchPosition);
-				} else {
+				} else if (ropeActive) {
 					DestroyRope();
 				}
 			}
@@ -158,7 +160,6 @@ public class TryRopeController : NetworkBehaviour {
 			rope.distance = hit.distance;
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
-			ropeActive = true;
 		}
 		AssignPositions(playerPosition, rope.connectedAnchor);
 	}
@@ -169,6 +170,25 @@ public class TryRopeController : NetworkBehaviour {
 	*/
 	void DestroyRope() {
 		GameObject.Destroy(rope);
+	}
+
+
+	[Client]
+	void ifRopeActive() {
+		if (rope != null) {
+			CmdRopeActive();
+		} else {
+			CmdRopeNotActive();
+		}
+	}
+
+	[Command]
+	void CmdRopeActive() {
+		ropeActive = true;
+	}
+
+	[Command]
+	void CmdRopeNotActive() {
 		ropeActive = false;
 	}
 
