@@ -1,0 +1,245 @@
+fileFormatVersion: 2
+guid: 0cbbdebf6550e064fac014d8cc6ccc35
+timeCreated: 1522751551
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: RockSmall
+    21300002: RockBig
+    21300004: RockLay1
+    21300006: RockLay2
+    21300008: RockInside
+    21300010: RockLay3
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RockSmall
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 337
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -0.5459595, y: 7.5}
+        - {x: -8.5, y: 1.341217}
+        - {x: -8.5, y: -7.5}
+        - {x: 8.5, y: -7.5}
+        - {x: 8.5, y: 4.795685}
+        - {x: 5.454895, y: 7.5}
+      physicsShape:
+      - - {x: -3.5, y: 7.5}
+        - {x: -8.5, y: 3.5}
+        - {x: -8.5, y: -7.5}
+        - {x: 8.5, y: -7.5}
+        - {x: 8.5, y: 6.5}
+        - {x: 7.5, y: 7.5}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockBig
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 239
+        width: 65
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4.9796143, y: 30}
+        - {x: -22.208618, y: 27.458313}
+        - {x: -32.5, y: 20.93927}
+        - {x: -32.5, y: -30}
+        - {x: 32.5, y: -30}
+        - {x: 32.5, y: -2.7702942}
+        - {x: 28.295227, y: 10.030762}
+        - {x: 18.91687, y: 30}
+      physicsShape:
+      - - {x: -21.5, y: 30}
+        - {x: -32.5, y: 28}
+        - {x: -32.5, y: -30}
+        - {x: 32.5, y: -30}
+        - {x: 32.5, y: 17}
+        - {x: 26.5, y: 30}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockLay1
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 269
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16.5, y: 11}
+        - {x: -16.5, y: -11}
+        - {x: 16.5, y: -11}
+        - {x: 16.5, y: 11}
+      physicsShape:
+      - - {x: -16.5, y: 11}
+        - {x: -16.5, y: -11}
+        - {x: 16.5, y: -11}
+        - {x: 16.5, y: 11}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockLay2
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 269
+        width: 30
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 11}
+        - {x: -15, y: -11}
+        - {x: 15, y: -11}
+        - {x: 15, y: 11}
+      physicsShape:
+      - - {x: -15, y: 11}
+        - {x: -15, y: -11}
+        - {x: 15, y: -11}
+        - {x: 15, y: 11}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockInside
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 236
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 14}
+        - {x: -14, y: -14}
+        - {x: 14, y: -14}
+        - {x: 14, y: 14}
+      physicsShape:
+      - - {x: -14, y: 14}
+        - {x: -14, y: -14}
+        - {x: 14, y: -14}
+        - {x: 14, y: 14}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockLay3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 238
+        width: 51
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25.5, y: 13}
+        - {x: -25.5, y: -13}
+        - {x: 25.5, y: -13}
+        - {x: 25.5, y: 13}
+      physicsShape:
+      - - {x: -25.5, y: 13}
+        - {x: -25.5, y: -13}
+        - {x: 25.5, y: -13}
+        - {x: 25.5, y: 13}
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
