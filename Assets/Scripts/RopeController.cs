@@ -16,10 +16,6 @@ public class RopeController : NetworkBehaviour {
 	private Vector2 touchPosition;
 	private LineSpawn lineSpawn;
 
-	public override void OnStartLocalPlayer() {
-         Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
-    }
-
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
@@ -97,11 +93,12 @@ public class RopeController : NetworkBehaviour {
 
 
 			} else if (touch.phase == TouchPhase.Ended) {
-				if (!ropeActive) {
+				bool grounded = gameObject.GetComponent<PlayerMovement>().isGrounded();
+				if (!ropeActive && grounded) {
 					touchPosition = Camera.main.ScreenToWorldPoint
 					(new Vector2(touch.position.x, touch.position.y));
 					ShootRope(touchPosition);
-				} else {
+				} else if (ropeActive) {
 					DestroyRope();
 				}
 			}

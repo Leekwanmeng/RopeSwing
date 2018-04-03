@@ -9,23 +9,23 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 10f;
-	public float walkForce = 5f;
+	public float swingForce = 200f;
+	public float walkForce = 30f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 4f;
+	public float maxSpeed = 20f;
 	public float magnitude;
 
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
-	private float distanceToGround = 1.4f;
+	private float distanceToGround = 2f;
 	private Vector2 velocity;
     //made public for testing
     public bool facingRight = true;
 
 
 
-    //Constructors for testing
+    // TESTING
 
     public void Construct()
     {
@@ -50,13 +50,20 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
 
-
     //Enumerator for testing
 
     public IEnumerator GetEnumerator()
     {
         return null;
         //fix this later
+    }
+
+
+
+    // MAIN CODE
+
+    public override void OnStartLocalPlayer() {
+         Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
     }
 
 
