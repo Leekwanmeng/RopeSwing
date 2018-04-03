@@ -196,6 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 56094322}
   - component: {fileID: 56094323}
+  - component: {fileID: 56094324}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -233,6 +234,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5511c764ade6d5848a3e571debd55f83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &56094324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 56094321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628f643e4578d5a4882ee8118ea3c82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &172799897
@@ -406,7 +418,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 56094323}
+      - m_Target: {fileID: 56094324}
         m_MethodName: Options
         m_Mode: 1
         m_Arguments:
@@ -887,7 +899,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 56094323}
+      - m_Target: {fileID: 56094324}
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
