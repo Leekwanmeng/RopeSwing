@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 61673526008328448}
   - component: {fileID: 114777010972455242}
   - component: {fileID: 114191107584651732}
+  - component: {fileID: 114495967991157492}
   - component: {fileID: 114693649017521968}
   - component: {fileID: 120754690892108498}
   - component: {fileID: 114226080213904944}
@@ -143,11 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d775f82fb9924c641b12af8a9c73d5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceToAdd: 20
+  swingForce: 500
+  walkForce: 30
   tiltThreshold: 0.4
   maxSpeed: 5
   magnitude: 0
   facingRight: 1
+  toFlip: 0
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -180,6 +183,18 @@ MonoBehaviour:
     i15: 144
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114495967991157492
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1451649781215020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3212dcd96d495ff41bbec2aabc5860c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
 --- !u!114 &114693649017521968
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -193,7 +208,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 120754690892108498}
   ropeActive: 0
-  linePrefab: {fileID: 0}
+  startPosition: {x: 0, y: 0}
+  endPosition: {x: 0, y: 0}
 --- !u!114 &114777010972455242
 MonoBehaviour:
   m_ObjectHideFlags: 1

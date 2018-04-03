@@ -9,13 +9,14 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 100f;
-	public float walkForce = 5f;
+	public float swingForce = 10f;
+	public float walkForce = 0.5f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 5f;
+	public float maxSpeed = 3f;
 	public float magnitude;
-	[SyncVar]
 	public bool facingRight;
+	[SyncVar]
+	public bool toFlip;
 
 	/*Private fields*/
 	private RopeController ropeController;
@@ -78,7 +79,7 @@ public class PlayerMovement : NetworkBehaviour {
 		movement();
 
 		checkPlayerDirection();
-		ifFacingRight();
+		ifToFlip();
 	}
 
 	// Update per physics frame
@@ -127,22 +128,27 @@ public class PlayerMovement : NetworkBehaviour {
 	[Client]
 	public void checkPlayerDirection() {
 		if (velocity.x > 0.1f && transform.localScale.x < 0) {
-			CmdFlip();
+			CmdSetFlip();
 		} else if (velocity.x < -0.1f && transform.localScale.x > 0) {
-			CmdFlip();
+			CmdSetFlip();
 		}
 	}
 
 	[Command]
-	void CmdFlip() {
-		facingRight = !facingRight;
+	void CmdSetFlip() {
+		toFlip = true;
 	}
 
-	void ifFacingRight() {
-		if (velocity.x > 0.1f && !facingRight) {
+	[Command]
+	void CmdSetNoFlip() {
+		toFlip = false;
+	}
+
+	[Client]
+	void ifToFlip() {
+		if (toFlip) {
 			flipSprite();
-		} else if (velocity.x < -0.1f && facingRight) {
-			flipSprite();
+			CmdSetNoFlip();
 		}
 	}
 
