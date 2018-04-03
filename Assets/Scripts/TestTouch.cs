@@ -14,7 +14,6 @@ public class TestTouch : MonoBehaviour {
 
     void Update()
     {
-        Touch touch = Input.GetTouch(0);
 
         //Update the Text on the screen depending on current position of the touch each frame
         m_Text1.text = "Tilt: " + Input.acceleration;

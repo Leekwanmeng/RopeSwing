@@ -9,16 +9,16 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 200f;
+	public float swingForce = 500f;
 	public float walkForce = 30f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 20f;
+	public float maxSpeed = 30f;
 	public float magnitude;
 
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
-	private float distanceToGround = 2f;
+	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
     //made public for testing
     public bool facingRight = true;
@@ -102,7 +102,7 @@ public class PlayerMovement : NetworkBehaviour {
 		if (ropeController.ropeActive && magnitude < maxSpeed) {
 			tiltForce(swingForce);
 		} else if (!ropeController.ropeActive 
-				&& isGrounded() && magnitude < maxSpeed) {
+				&& isGrounded()) {
 			tiltForce(walkForce);
 		}
 	}
@@ -174,7 +174,7 @@ public class PlayerMovement : NetworkBehaviour {
     public bool isGrounded() {
     	RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
-    	// Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
+    	Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
     	if (hit.collider != null) {
         	return true;
     	}
