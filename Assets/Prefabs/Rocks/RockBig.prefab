@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4773115538840306}
   - component: {fileID: 212394962218713132}
   - component: {fileID: 61989709489472358}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RockBig
   m_TagString: Foreground
   m_Icon: {fileID: 0}

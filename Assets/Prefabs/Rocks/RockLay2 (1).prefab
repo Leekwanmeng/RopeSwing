@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4075618515314496}
   - component: {fileID: 212833710418544536}
   - component: {fileID: 61712601726860978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RockLay2 (1)
   m_TagString: Foreground
   m_Icon: {fileID: 0}

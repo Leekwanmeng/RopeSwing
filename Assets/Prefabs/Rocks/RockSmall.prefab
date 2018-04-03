@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4125324068532078}
   - component: {fileID: 212912084950957598}
   - component: {fileID: 61979349011798476}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RockSmall
   m_TagString: Foreground
   m_Icon: {fileID: 0}
