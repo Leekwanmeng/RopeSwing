@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 
-public class RopeController : NetworkBehaviour {
+public class TryRopeController : NetworkBehaviour {
 
 	/*Public Fields*/
 	public LineRenderer lineRenderer;
+	[SyncVar]
 	public bool ropeActive;
-	public GameObject linePrefab;
+	[SyncVar (hook = "OnRopeActve")]
+	public Vector2 startPosition;
+	[SyncVar]
+	public Vector2 endPosition;
 
 	/*Private Fields*/
 	private Animator animator;
 	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 	private LineSpawn lineSpawn;
+
+	public override void OnStartLocalPlayer() {
+         Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
+    }
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
@@ -27,7 +35,7 @@ public class RopeController : NetworkBehaviour {
 			return;
 		}
 		TouchDetection();
-		CmdRenderRope();
+		// CmdRenderRope();
 	}
 
 	// Update per physics frame
@@ -39,42 +47,67 @@ public class RopeController : NetworkBehaviour {
 		animateSwing();
 	}
 
+	[Client]
+	void AssignPositions(Vector2 startPos, Vector2 endPos) {
+		CmdPositions(startPos, endPos);
+	}
+
+
+	[Command]
+	void CmdPositions(Vector2 startPos, Vector2 endPos) {
+		startPosition = startPos;
+		endPosition = endPos;
+	}
+
+
+
+	void OnRopeActve(Vector2 startPos) {
+		if (!ropeActive) {
+			lineRenderer.enabled = false;
+		}
+		startPosition = startPos;
+		lineRenderer.enabled = true;
+		lineRenderer.positionCount = 2;
+		lineRenderer.SetPosition(0, startPosition);
+		lineRenderer.SetPosition(1, rope.connectedAnchor);
+	}
+
 
 	/*
 	* Updates after all update functions called
 	* Adds LineRenderer to existing rope (from player to anchor)
 	*/
-	[Command]
-	void CmdRenderRope() {
-		GameObject line = (GameObject)Instantiate(
-					linePrefab,
-					transform.position,
-					transform.rotation);
+	// [Command]
+	// void CmdRenderRope() {
+	// 	GameObject line = (GameObject)Instantiate(
+	// 				linePrefab,
+	// 				transform.position,
+	// 				transform.rotation);
 
-		lineSpawn = line.GetComponent<LineSpawn>();
-		if (rope != null) {
-			lineSpawn.setStartPosition(transform.position);
-			lineSpawn.setEndPosition(rope.connectedAnchor);
-			// lineSpawn.RenderRope();
-		} 
-		// else {
-			// lineSpawn.UnrenderRope();
-		// }
+	// 	lineSpawn = line.GetComponent<LineSpawn>();
+	// 	if (rope != null) {
+	// 		lineSpawn.setStartPosition(transform.position);
+	// 		lineSpawn.setEndPosition(rope.connectedAnchor);
+	// 		// lineSpawn.RenderRope();
+	// 	} 
+	// 	// else {
+	// 		// lineSpawn.UnrenderRope();
+	// 	// }
 
-		NetworkServer.SpawnWithClientAuthority(line, gameObject);
+	// 	NetworkServer.SpawnWithClientAuthority(line, gameObject);
 
 
-		// if (rope != null) {
-		// 	lineRenderer.enabled = true;
-		// 	lineRenderer.positionCount = 2;
-		// 	lineRenderer.SetPosition(0, gameObject.transform.position);
-		// 	lineRenderer.SetPosition(1, rope.connectedAnchor);
-		// 	animator.SetBool("ropeActive", true);
-		// } else {
-		// 	lineRenderer.enabled = false;
-		// 	animator.SetBool("ropeActive", false);
-		// }
-	}
+	// 	// if (rope != null) {
+	// 	// 	lineRenderer.enabled = true;
+	// 	// 	lineRenderer.positionCount = 2;
+	// 	// 	lineRenderer.SetPosition(0, gameObject.transform.position);
+	// 	// 	lineRenderer.SetPosition(1, rope.connectedAnchor);
+	// 	// 	animator.SetBool("ropeActive", true);
+	// 	// } else {
+	// 	// 	lineRenderer.enabled = false;
+	// 	// 	animator.SetBool("ropeActive", false);
+	// 	// }
+	// }
 
 
 	/*
@@ -93,12 +126,11 @@ public class RopeController : NetworkBehaviour {
 
 
 			} else if (touch.phase == TouchPhase.Ended) {
-				bool grounded = gameObject.GetComponent<PlayerMovement>().isGrounded();
-				if (!ropeActive && grounded) {
+				if (!ropeActive) {
 					touchPosition = Camera.main.ScreenToWorldPoint
 					(new Vector2(touch.position.x, touch.position.y));
 					ShootRope(touchPosition);
-				} else if (ropeActive) {
+				} else {
 					DestroyRope();
 				}
 			}
@@ -128,6 +160,7 @@ public class RopeController : NetworkBehaviour {
 			rope.enabled = true;
 			ropeActive = true;
 		}
+		AssignPositions(playerPosition, rope.connectedAnchor);
 	}
 
 
