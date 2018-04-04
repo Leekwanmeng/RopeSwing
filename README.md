@@ -1,7 +1,7 @@
-# RockClimbing
+# RopeSwing
 
 INTRODUCTION
-RockClimbing is a 2 Player Co-op 2D Platformer Game.
+RopeSwing is a 2 Player Co-op 2D Platformer Game.
 Team up with a friend and scale obstacles to reach the goal!
 
 Available on mobile only.
