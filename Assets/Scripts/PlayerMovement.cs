@@ -9,10 +9,10 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 3f;
+	public float swingForce = 3.5f;
 	public float walkForce = 0.04f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 2.5f;
+	public float maxSpeed = 3f;
 	public float magnitude;
 	public bool facingRight;
 	[SyncVar]
