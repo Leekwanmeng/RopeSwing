@@ -9,10 +9,10 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 10f;
-	public float walkForce = 0.5f;
+	public float swingForce = 3f;
+	public float walkForce = 0.04f;
 	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 3f;
+	public float maxSpeed = 2.5f;
 	public float magnitude;
 	public bool facingRight;
 	[SyncVar]
@@ -100,7 +100,7 @@ public class PlayerMovement : NetworkBehaviour {
 		if (ropeController.ropeActive && magnitude < maxSpeed) {
 			tiltForce(swingForce);
 		} else if (!ropeController.ropeActive 
-				&& isGrounded()) {
+				&& isGrounded() && magnitude < maxSpeed) {
 			tiltForce(walkForce);
 		}
 	}
