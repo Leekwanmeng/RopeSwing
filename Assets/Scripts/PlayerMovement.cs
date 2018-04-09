@@ -14,16 +14,14 @@ public class PlayerMovement : NetworkBehaviour {
 	public float tiltThreshold = 0.4f;
 	public float maxSpeed = 3f;
 	public float magnitude;
-	public bool facingRight;
-	[SyncVar]
-	public bool toFlip;
+	public bool facingRight = true;
 
 	/*Private fields*/
 	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
 	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
- 
+ 	private PlayerSyncSprite syncPos;
 
     // TESTING
 
@@ -67,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour {
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
 		ropeController = gameObject.GetComponent<RopeController>();
 		facingRight = true;
+		syncPos = GetComponent<PlayerSyncSprite>();
 	}
 
 	// Update is called once per frame
@@ -79,7 +78,6 @@ public class PlayerMovement : NetworkBehaviour {
 		movement();
 
 		checkPlayerDirection();
-		ifToFlip();
 	}
 
 	// Update per physics frame
@@ -125,50 +123,23 @@ public class PlayerMovement : NetworkBehaviour {
 	/*
 	* Checks player's horizontal movement and determines if player should flip
 	*/
-	[Client]
 	public void checkPlayerDirection() {
-		if (velocity.x > 0.1f && transform.localScale.x < 0) {
-			CmdSetFlip();
-		} else if (velocity.x < -0.1f && transform.localScale.x > 0) {
-			CmdSetFlip();
+		if ((velocity.x > 0.05f && !facingRight) || (velocity.x < 0.05f && facingRight)) {
+			facingRight = !facingRight;
+			syncPos.CmdFlipSprite(facingRight);
 		}
 	}
 
-	[Command]
-	void CmdSetFlip() {
-		toFlip = true;
-	}
 
-	[Command]
-	void CmdSetNoFlip() {
-		toFlip = false;
-	}
-
+	//////////////////////////////////
+	//////////// OBSOLETE ////////////
+	//////////////////////////////////
 	[Client]
-	void ifToFlip() {
-		if (toFlip) {
-			flipSprite();
-			CmdSetNoFlip();
-		}
-	}
-
-
     public void flipSprite() {
 		Vector3 theScale = transform.localScale;
 	    theScale.x *= -1;
 	    transform.localScale = theScale;
     }
-
-
-    /*
-    public void flipMock(Transform Target)
-    {
-        facingRight = !facingRight;
-        Vector3 theScale = Target.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
-    }
-    */
 
 
     /*

@@ -46,7 +46,7 @@ public class PlayerDeath : NetworkBehaviour {
 	*/
 	[ClientRpc]
     void RpcRespawn() {
-        if (isLocalPlayer){
+        if (isLocalPlayer) {
             // move back to zero location
             transform.position = Vector3.zero;
         }

@@ -30,7 +30,7 @@ public class NetworkManagerUI : NetworkManager {
     void SetIPAddress()
     {
         string ipAddress = GameObject.Find("InputFieldIPAddress").
-            transform.FindChild("Text").GetComponent<Text>().text;
+            transform.Find("Text").GetComponent<Text>().text;
 
         NetworkManager.singleton.networkAddress = ipAddress;
     }
