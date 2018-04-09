@@ -13,10 +13,10 @@ public class TryRopeController : NetworkBehaviour {
 	public Vector2 startPosition;
 	[SyncVar]
 	public Vector2 endPosition;
+	public DistanceJoint2D rope;
 
 	/*Private Fields*/
 	private Animator animator;
-	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
 	private LineSpawn lineSpawn;
 

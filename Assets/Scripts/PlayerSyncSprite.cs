@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerSyncSprite : NetworkBehaviour {
 
-	[SyncVar(hook = "FacingCallback")]
+	[SyncVar (hook = "FacingCallback")]
     public bool netFacingRight = true;
  
  	[Command]

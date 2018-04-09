@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e20a3df437c2643aa2c5405ea90071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  netFacingRight: 1
 --- !u!114 &114190258571772022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,11 +159,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swingForce: 500
   walkForce: 30
+  maxSwingSpeed: 4
+  maxWalkSpeed: 3
   tiltThreshold: 0.4
-  maxSpeed: 5
   magnitude: 0
   facingRight: 1
-  netFacingRight: 1
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -222,6 +223,7 @@ MonoBehaviour:
   ropeActive: 0
   startPosition: {x: 0, y: 0}
   endPosition: {x: 0, y: 0}
+  rope: {fileID: 0}
 --- !u!114 &114777010972455242
 MonoBehaviour:
   m_ObjectHideFlags: 1

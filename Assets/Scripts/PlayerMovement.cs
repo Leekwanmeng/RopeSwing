@@ -9,15 +9,17 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 3.5f;
-	public float walkForce = 0.04f;
-	public float tiltThreshold = 0.4f;
-	public float maxSpeed = 3f;
+	public float swingForce = 4f;
+	public float walkForce = 0.03f;
+	public float maxSwingSpeed = 4f;
+	public float maxWalkSpeed = 3f;
+
+	public float tiltThreshold = 0.5f;
 	public float magnitude;
 	public bool facingRight = true;
 
 	/*Private fields*/
-	private RopeController ropeController;
+	private TryRopeController tryRopeController;
 	private Rigidbody2D rb2d = null;
 	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
@@ -63,7 +65,7 @@ public class PlayerMovement : NetworkBehaviour {
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
-		ropeController = gameObject.GetComponent<RopeController>();
+		tryRopeController = gameObject.GetComponent<TryRopeController>();
 		facingRight = true;
 		syncPos = GetComponent<PlayerSyncSprite>();
 	}
@@ -95,11 +97,42 @@ public class PlayerMovement : NetworkBehaviour {
 	* Assigns type of movement
 	*/
 	void movement() {
-		if (ropeController.ropeActive && magnitude < maxSpeed) {
-			tiltForce(swingForce);
-		} else if (!ropeController.ropeActive 
-				&& isGrounded() && magnitude < maxSpeed) {
-			tiltForce(walkForce);
+		if (tryRopeController.ropeActive) {
+			if ((Input.acceleration.y > tiltThreshold) || (Input.acceleration.y < -tiltThreshold)) {
+				climb();
+			} else if ((Input.acceleration.x > tiltThreshold) || (Input.acceleration.x < -tiltThreshold)) {
+				swing();
+			}
+		} else if (!tryRopeController.ropeActive && isGrounded()) {
+			walk();
+		}
+	}
+
+	void climb() {
+		if (Input.acceleration.y > tiltThreshold) {
+			tryRopeController.rope.distance += 0.5f;
+		} else if (Input.acceleration.y < -tiltThreshold) {
+			tryRopeController.rope.distance -= 0.5f;
+		}
+	}
+
+	void swing() {
+		if (magnitude < maxSwingSpeed) {
+			if (Input.acceleration.x > tiltThreshold) {
+				GetComponent<Rigidbody2D>().AddForce(Vector2.right * swingForce);
+			} else if (Input.acceleration.x < -tiltThreshold) {
+				GetComponent<Rigidbody2D>().AddForce(Vector2.left * swingForce);
+			}
+		}
+	}
+
+	void walk() {
+		if (magnitude < maxWalkSpeed) {
+			if (Input.acceleration.x > tiltThreshold) {
+				GetComponent<Rigidbody2D>().AddForce(Vector2.right * walkForce);
+			} else if (Input.acceleration.x < -tiltThreshold) {
+				GetComponent<Rigidbody2D>().AddForce(Vector2.left * walkForce);
+			}
 		}
 	}
 
@@ -110,7 +143,7 @@ public class PlayerMovement : NetworkBehaviour {
 	*
 	* @param Type and value of force
 	*/
-	void tiltForce(float force) {
+	void tiltHorizontalForce(float force) {
 		if (Input.acceleration.x > tiltThreshold) {
 			GetComponent<Rigidbody2D>().AddForce(Vector2.right*force);
 		}
@@ -157,10 +190,12 @@ public class PlayerMovement : NetworkBehaviour {
 	* @return true is grounded
 	*/
     public bool isGrounded() {
-    	RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 
+    	RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
-    	Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
-    	if (hit.collider != null) {
+    	RaycastHit2D hitPlayer = Physics2D.Raycast(transform.position, Vector2.down, 
+    						distanceToGround, 1 << LayerMask.NameToLayer("Player"));
+    	// Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
+    	if (hitGround.collider != null || hitPlayer.collider != null) {
         	return true;
     	}
     	return false;
