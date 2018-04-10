@@ -6,7 +6,6 @@ using UnityEngine;
 public class TryRopeController : NetworkBehaviour {
 
 	/*Public Fields*/
-	public LineRenderer lineRenderer;
 	[SyncVar]
 	public bool ropeActive;
 	[SyncVar (hook = "OnRopeActve")]
@@ -14,6 +13,8 @@ public class TryRopeController : NetworkBehaviour {
 	[SyncVar]
 	public Vector2 endPosition;
 	public DistanceJoint2D rope;
+	public LineRenderer lineRenderer;
+	public PlayerMovement playerMovement;
 
 	/*Private Fields*/
 	private Animator animator;
@@ -27,6 +28,9 @@ public class TryRopeController : NetworkBehaviour {
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
+		playerMovement = GetComponent<PlayerMovement>();
+		rope = GetComponent<DistanceJoint2D>();
+		rope.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -156,12 +160,13 @@ public class TryRopeController : NetworkBehaviour {
 							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
-			rope = gameObject.AddComponent<DistanceJoint2D>();
+			rope.enabled = true;
 			rope.enableCollision = true;
 			rope.distance = hit.distance;
 			rope.connectedAnchor = hit.point;
-			rope.enabled = true;
+			playerMovement.ropeHook = hit.point;
 		}
+
 		AssignPositions(playerPosition, rope.connectedAnchor);
 	}
 
@@ -170,7 +175,7 @@ public class TryRopeController : NetworkBehaviour {
 	* Destroys rope if exists
 	*/
 	void DestroyRope() {
-		GameObject.Destroy(rope);
+		rope.enabled = false;
 	}
 
 
@@ -180,7 +185,7 @@ public class TryRopeController : NetworkBehaviour {
 	*/
 	[Client]
 	void ifRopeActive() {
-		if (rope != null) {
+		if (rope.enabled == true) {
 			CmdRopeActive();
 		} else {
 			CmdRopeNotActive();

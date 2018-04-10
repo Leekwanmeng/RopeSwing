@@ -30,8 +30,9 @@ GameObject:
   - component: {fileID: 120754690892108498}
   - component: {fileID: 114226080213904944}
   - component: {fileID: 114190258571772022}
-  - component: {fileID: 95896327028330098}
   - component: {fileID: 114969717904397552}
+  - component: {fileID: 95896327028330098}
+  - component: {fileID: 232308928602762786}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -158,11 +159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d775f82fb9924c641b12af8a9c73d5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swingForce: 500
-  walkForce: 30
-  maxSwingSpeed: 4
-  maxWalkSpeed: 3
-  tiltThreshold: 0.4
+  swingForce: 3.2
+  walkForce: 0.02
+  maxSwingSpeed: 3
+  maxWalkSpeed: 3.5
+  climbingStep: 0.05
+  xTiltThreshold: 0.5
+  yTiltThreshold: 0.6
   magnitude: 0
   facingRight: 1
 --- !u!114 &114226080213904944
@@ -390,3 +393,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!232 &232308928602762786
+DistanceJoint2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1451649781215020}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 1
+  m_Distance: 1
+  m_MaxDistanceOnly: 0
