@@ -37,6 +37,7 @@ public class TryRopeController : NetworkBehaviour {
 		TouchDetection();
 		ifRopeActive();
 		// CmdRenderRope();
+		animateSwing();
 	}
 
 	// Update per physics frame
@@ -45,7 +46,7 @@ public class TryRopeController : NetworkBehaviour {
 
 	// Last update
 	void LateUpdate() {
-		animateSwing();
+		
 	}
 
 	[Client]

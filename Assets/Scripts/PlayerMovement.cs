@@ -11,7 +11,7 @@ public class PlayerMovement : NetworkBehaviour {
 	/*Public Fields*/
 	public float swingForce = 4f;
 	public float walkForce = 0.03f;
-	public float maxSwingSpeed = 4f;
+	public float maxSwingSpeed = 3.2f;
 	public float maxWalkSpeed = 3f;
 
 	public float tiltThreshold = 0.5f;
@@ -24,6 +24,7 @@ public class PlayerMovement : NetworkBehaviour {
 	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
+ 	private Animator animator;
 
     // TESTING
 
@@ -66,6 +67,7 @@ public class PlayerMovement : NetworkBehaviour {
 		rb2d = GetComponent<Rigidbody2D>();
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
 		tryRopeController = gameObject.GetComponent<TryRopeController>();
+		animator = GetComponent<Animator>();
 		facingRight = true;
 		syncPos = GetComponent<PlayerSyncSprite>();
 	}
@@ -80,6 +82,7 @@ public class PlayerMovement : NetworkBehaviour {
 		movement();
 
 		checkPlayerDirection();
+		animateMovement();
 	}
 
 	// Update per physics frame
@@ -90,6 +93,7 @@ public class PlayerMovement : NetworkBehaviour {
 	// Last Update
 	void LateUpdate() {
 		lockPlayerRotation();
+		
 	}
 
 	/*
@@ -199,5 +203,9 @@ public class PlayerMovement : NetworkBehaviour {
         	return true;
     	}
     	return false;
+    }
+
+    void animateMovement() {
+    	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
     }
 }
