@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d775f82fb9924c641b12af8a9c73d5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swingForce: 3.2
-  walkForce: 0.03
-  maxSwingSpeed: 3
-  maxWalkSpeed: 3.5
+  swingForce: 10
+  walkForce: 5
+  maxSwingSpeed: 5
+  maxWalkSpeed: 5
   climbStep: 3
   tiltThreshold: 0.5
   magnitude: 0

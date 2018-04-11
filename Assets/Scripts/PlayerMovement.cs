@@ -10,7 +10,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
 	public float swingForce = 10f;
-	public float walkForce = 20f;
+	public float walkForce = 5f;
 	public float maxSwingSpeed = 5f;
 	public float maxWalkSpeed = 5f;
 	public float climbStep = 3f;
