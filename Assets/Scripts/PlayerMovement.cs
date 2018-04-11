@@ -9,9 +9,9 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 6f;
+	public float swingForce = 10f;
 	public float walkForce = 20f;
-	public float maxSwingSpeed = 4f;
+	public float maxSwingSpeed = 5f;
 	public float maxWalkSpeed = 5f;
 	public float climbStep = 3f;
 
@@ -75,7 +75,6 @@ public class PlayerMovement : NetworkBehaviour {
 		animator = GetComponent<Animator>();
 		facingRight = true;
 		syncPos = GetComponent<PlayerSyncSprite>();
-		print("Heloo");
 	}
 
 	// Update is called once per frame
@@ -127,13 +126,13 @@ public class PlayerMovement : NetworkBehaviour {
 
 
 	void checkClimb() {
-		if (!isColliding) {
-			if (verticalInput > 0) {
-				tryRopeController.rope.distance -= Time.deltaTime * climbStep;
-			} else if (verticalInput < 0) {
-				tryRopeController.rope.distance += Time.deltaTime * climbStep;
-			}
+		
+		if (verticalInput > 0) {
+			tryRopeController.rope.distance -= Time.deltaTime * climbStep;
+		} else if (verticalInput < 0) {
+			tryRopeController.rope.distance += Time.deltaTime * climbStep;
 		}
+		
 	}
 
 	void checkSwing() {
@@ -202,11 +201,4 @@ public class PlayerMovement : NetworkBehaviour {
     	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
     }
 
-    void OnTriggerStay2D(Collider2D colliderStay) {
-        isColliding = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D colliderOnExit) {
-        isColliding = false;
-    }
 }

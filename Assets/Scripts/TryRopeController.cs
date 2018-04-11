@@ -25,7 +25,7 @@ public class TryRopeController : NetworkBehaviour {
          Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
     }
 
-	void Start() {
+	void Awake() {
 		rope = GetComponent<DistanceJoint2D>();
 		lineRenderer = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
@@ -42,6 +42,7 @@ public class TryRopeController : NetworkBehaviour {
 		playerPosition = transform.position;
 		TouchDetection();
 		ifRopeActive();
+		LineRender();
 		// CmdRenderRope();
 		animateSwing();
 		
@@ -70,16 +71,15 @@ public class TryRopeController : NetworkBehaviour {
 
 
 
-	// void OnRopeActve(Vector2 startPos) {
-	// 	if (!ropeActive) {
-	// 		lineRenderer.enabled = false;
-	// 	}
-	// 	startPosition = startPos;
-	// 	lineRenderer.enabled = true;
-	// 	lineRenderer.positionCount = 2;
-	// 	lineRenderer.SetPosition(0, startPosition);
-	// 	lineRenderer.SetPosition(1, rope.connectedAnchor);
-	// }
+	void LineRender() {
+		if (!rope.enabled) {
+			return;
+		}
+		lineRenderer.positionCount = 2;
+		lineRenderer.SetPosition(0, playerPosition);
+		lineRenderer.SetPosition(1, rope.connectedAnchor);
+		lineRenderer.enabled = true;
+	}
 
 
 	// 	// if (rope != null) {
@@ -137,16 +137,11 @@ public class TryRopeController : NetworkBehaviour {
 							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
+
 			transform.GetComponent<Rigidbody2D>().AddForce(
 				new Vector2(0f, 5f), ForceMode2D.Impulse);
-
-			lineRenderer.positionCount = 2;
-			lineRenderer.SetPosition(0, playerPosition);
-			lineRenderer.SetPosition(1, rope.connectedAnchor);
-			lineRenderer.enabled = true;
-
 			rope.enableCollision = true;
-			rope.distance = hit.distance;
+			rope.distance = Vector2.Distance(playerPosition, hit.point);
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 		}
