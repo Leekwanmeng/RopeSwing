@@ -10,7 +10,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
 	public float swingForce = 10f;
-	public float walkForce = 8f;
+	public float walkForce = 7f;
 	public float maxSwingSpeed = 5f;
 	public float maxWalkSpeed = 4f;
 	public float climbStep = 3f;
@@ -153,18 +153,22 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 	void checkWalk() {
-		if (horizontalInput > 0) {
-			rb2d.AddForce(Vector2.right * walkForce);
-		} else if (horizontalInput < 0) {
-			rb2d.AddForce(Vector2.left * walkForce);
-		}
+		// if (horizontalInput > 0) {
+		// 	rb2d.AddForce(Vector2.right * walkForce);
+		// } else if (horizontalInput < 0) {
+		// 	rb2d.AddForce(Vector2.left * walkForce);
+		// }
+		if (horizontalInput != 0 && rb2d.velocity.x < maxWalkSpeed) {
+	        rb2d.AddForce(new Vector2((horizontalInput * walkForce - rb2d.velocity.x) * 10f, 0f));
+	        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+	    }
 	}
 
 	/*
 	* Checks player's horizontal movement and determines if player should flip
 	*/
 	public void checkPlayerDirection() {
-		if ((velocity.x > 0.05f && !facingRight) || (velocity.x < 0.05f && facingRight)) {
+		if ((velocity.x > 0.1f && !facingRight) || (velocity.x < 0.1f && facingRight)) {
 			facingRight = !facingRight;
 			syncPos.CmdFlipSprite(facingRight);
 		}
