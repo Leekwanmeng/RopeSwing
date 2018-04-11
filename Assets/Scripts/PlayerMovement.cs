@@ -23,13 +23,14 @@ public class PlayerMovement : NetworkBehaviour {
 	public float horizontalInput;
 
 	/*Private fields*/
+	private float distanceToGround = 1.6f;
+	private float distanceToCeiling = 1.6f;
+
 	private TryRopeController tryRopeController;
 	private Rigidbody2D rb2d = null;
-	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
  	private Animator animator;
- 	private bool isColliding;
 
     // TESTING
 
@@ -79,7 +80,6 @@ public class PlayerMovement : NetworkBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		print(isColliding);
 		if (!isLocalPlayer) {
 			return;
 		}
@@ -128,8 +128,17 @@ public class PlayerMovement : NetworkBehaviour {
 	void checkClimb() {
 		
 		if (verticalInput > 0) {
+			RaycastHit2D hitCeiling = Physics2D.Raycast(transform.position, Vector2.up, 
+    						distanceToCeiling, 1 << LayerMask.NameToLayer("Wall"));
+
+			if (hitCeiling.collider != null) return;
+
 			tryRopeController.rope.distance -= Time.deltaTime * climbStep;
 		} else if (verticalInput < 0) {
+			RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
+    						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
+			if (hitGround.collider != null) return;
+
 			tryRopeController.rope.distance += Time.deltaTime * climbStep;
 		}
 		
