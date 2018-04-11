@@ -75,8 +75,9 @@ public class TryRopeController : NetworkBehaviour {
 		if (!rope.enabled) {
 			return;
 		}
+		Vector2 playerHandPosition = playerPosition + new Vector2(0f, 0.2f);
 		lineRenderer.positionCount = 2;
-		lineRenderer.SetPosition(0, playerPosition);
+		lineRenderer.SetPosition(0, playerHandPosition);
 		lineRenderer.SetPosition(1, rope.connectedAnchor);
 		lineRenderer.enabled = true;
 	}

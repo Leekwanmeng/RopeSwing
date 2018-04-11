@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingForce: 10
-  walkForce: 5
+  walkForce: 8
   maxSwingSpeed: 5
-  maxWalkSpeed: 5
+  maxWalkSpeed: 4
   climbStep: 3
   tiltThreshold: 0.5
   magnitude: 0
