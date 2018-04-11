@@ -9,10 +9,11 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 4f;
-	public float walkForce = 5f;
-	public float maxSwingSpeed = 3.2f;
-	public float maxWalkSpeed = 3f;
+	public float swingForce = 6f;
+	public float walkForce = 20f;
+	public float maxSwingSpeed = 4f;
+	public float maxWalkSpeed = 5f;
+	public float climbStep = 3f;
 
 	public float tiltThreshold = 0.5f;
 	public float magnitude;
@@ -28,6 +29,7 @@ public class PlayerMovement : NetworkBehaviour {
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
  	private Animator animator;
+ 	private bool isColliding;
 
     // TESTING
 
@@ -78,7 +80,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		print("Grounded: " + isGrounded());
+		print(isColliding);
 		if (!isLocalPlayer) {
 			return;
 		}
@@ -125,26 +127,28 @@ public class PlayerMovement : NetworkBehaviour {
 
 
 	void checkClimb() {
-		if (verticalInput > 0) {
-			tryRopeController.rope.distance += Time.deltaTime * 2f;
-		} else if (verticalInput < 0) {
-			tryRopeController.rope.distance -= Time.deltaTime * 2f;
+		if (!isColliding) {
+			if (verticalInput > 0) {
+				tryRopeController.rope.distance -= Time.deltaTime * climbStep;
+			} else if (verticalInput < 0) {
+				tryRopeController.rope.distance += Time.deltaTime * climbStep;
+			}
 		}
 	}
 
 	void checkSwing() {
 		if (horizontalInput > 0) {
-			GetComponent<Rigidbody2D>().AddForce(Vector2.right * swingForce);
+			rb2d.AddForce(Vector2.right * swingForce);
 		} else if (horizontalInput < 0) {
-			GetComponent<Rigidbody2D>().AddForce(Vector2.left * swingForce);
+			rb2d.AddForce(Vector2.left * swingForce);
 		}
 	}
 
 	void checkWalk() {
 		if (horizontalInput > 0) {
-			GetComponent<Rigidbody2D>().AddForce(Vector2.right * walkForce);
+			rb2d.AddForce(Vector2.right * walkForce);
 		} else if (horizontalInput < 0) {
-			GetComponent<Rigidbody2D>().AddForce(Vector2.left * walkForce);
+			rb2d.AddForce(Vector2.left * walkForce);
 		}
 	}
 
@@ -196,5 +200,13 @@ public class PlayerMovement : NetworkBehaviour {
 
     void animateMovement() {
     	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
+    }
+
+    void OnTriggerStay2D(Collider2D colliderStay) {
+        isColliding = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D colliderOnExit) {
+        isColliding = false;
     }
 }
