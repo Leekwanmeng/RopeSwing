@@ -9,31 +9,25 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 10f;
-	public float maxSwingSpeed = 4f;
+	public float swingForce = 4f;
+	public float walkForce = 5f;
+	public float maxSwingSpeed = 3.2f;
+	public float maxWalkSpeed = 3f;
 
-	public float walkingSpeed = 10f;
-	public float maxWalkSpeed = 5f;
-	public float climbingStep = 2f;
-	public float distanceToGround = 1.6f;
-
-	public float xTiltThreshold = 0.5f;
-	public float yTiltThreshold = 0.6f;
-
+	public float tiltThreshold = 0.5f;
 	public float magnitude;
 	public bool facingRight = true;
-	public Vector2 ropeHook;
+
+	public float verticalInput;
+	public float horizontalInput;
 
 	/*Private fields*/
 	private TryRopeController tryRopeController;
-	private Rigidbody2D rb2d;
+	private Rigidbody2D rb2d = null;
+	private float distanceToGround = 1.6f;
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
  	private Animator animator;
- 	private bool isColliding;
- 	
- 	public float verticalInput;
- 	public float horizontalInput;
 
     // TESTING
 
@@ -79,49 +73,50 @@ public class PlayerMovement : NetworkBehaviour {
 		animator = GetComponent<Animator>();
 		facingRight = true;
 		syncPos = GetComponent<PlayerSyncSprite>();
+		print("Heloo");
 	}
 
 	// Update is called once per frame
 	void Update () {
+		print("Grounded: " + isGrounded());
 		if (!isLocalPlayer) {
 			return;
 		}
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
 		checkMovement();
+		checkClimb();
 		checkPlayerDirection();
 		animateMovement();
+		
 	}
 
 	// Update per physics frame
 	void FixedUpdate() {
 		if (tryRopeController.ropeActive) {
-			climb();
-			swing();
+			checkSwing();
 		} else if (!tryRopeController.ropeActive && isGrounded()) {
-			walk();
+			checkWalk();
 		}
 	}
 
 	// Last Update
 	void LateUpdate() {
 		lockPlayerRotation();
+		
 	}
 
 	/*
-	* Called to determine if player can move, based on Mobile Input
+	* Called to determine if player can move
 	* Assigns type of movement
 	*/
 	void checkMovement() {
-		if (Input.acceleration.y > yTiltThreshold || 
-			Input.acceleration.y < -(yTiltThreshold + 0.2f)) {
+		if ((Input.acceleration.y > tiltThreshold) || (Input.acceleration.y < -tiltThreshold)) {
 			verticalInput = Input.acceleration.y;
 		} else {
 			verticalInput = 0;
 		}
-
-		if (Input.acceleration.x > xTiltThreshold || 
-			Input.acceleration.x < -xTiltThreshold) {
+		if ((Input.acceleration.x > tiltThreshold) || (Input.acceleration.x < -tiltThreshold)) {
 			horizontalInput = Input.acceleration.x;
 		} else {
 			horizontalInput = 0;
@@ -129,57 +124,35 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 
-
-	/*
-	* Player Climbing movement
-	*/
-	void climb() {
-		if (verticalInput > 0 && !isColliding) {
-			tryRopeController.rope.distance -= Time.deltaTime * climbingStep;
+	void checkClimb() {
+		if (verticalInput > 0) {
+			tryRopeController.rope.distance += Time.deltaTime * 2f;
 		} else if (verticalInput < 0) {
-			tryRopeController.rope.distance += Time.deltaTime * climbingStep;
+			tryRopeController.rope.distance -= Time.deltaTime * 2f;
 		}
 	}
 
-
-	/*
-	* Player Swinging movement
-	*/
-	void swing() {
-		if (magnitude < maxSwingSpeed) {
-			Vector2 playerToHookDirection = (ropeHook - (Vector2) transform.position).normalized;
-			Vector2 perpendicularDirection = new Vector2(0f,1f);
-
-			if (horizontalInput > 0) {
-				perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-			} else if (horizontalInput < 0) {
-				perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
-			}
-
-			Vector2 force = perpendicularDirection * swingForce;
-			rb2d.AddForce(force);
+	void checkSwing() {
+		if (horizontalInput > 0) {
+			GetComponent<Rigidbody2D>().AddForce(Vector2.right * swingForce);
+		} else if (horizontalInput < 0) {
+			GetComponent<Rigidbody2D>().AddForce(Vector2.left * swingForce);
 		}
 	}
 
-	/*
-	* Player Walking movement
-	*/
-	void walk() {
-		if (magnitude < maxWalkSpeed) {
-			if (horizontalInput != 0) {
-            	rb2d.AddForce(new Vector2((horizontalInput * walkingSpeed - rb2d.velocity.x) * walkingSpeed, 0));
-            	rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
-			}
+	void checkWalk() {
+		if (horizontalInput > 0) {
+			GetComponent<Rigidbody2D>().AddForce(Vector2.right * walkForce);
+		} else if (horizontalInput < 0) {
+			GetComponent<Rigidbody2D>().AddForce(Vector2.left * walkForce);
 		}
 	}
-
-
 
 	/*
 	* Checks player's horizontal movement and determines if player should flip
 	*/
 	public void checkPlayerDirection() {
-		if ((velocity.x > 0.1f && !facingRight) || (velocity.x < 0.1f && facingRight)) {
+		if ((velocity.x > 0.05f && !facingRight) || (velocity.x < 0.05f && facingRight)) {
 			facingRight = !facingRight;
 			syncPos.CmdFlipSprite(facingRight);
 		}
@@ -207,33 +180,20 @@ public class PlayerMovement : NetworkBehaviour {
 
     /*
 	* Checks if player is grounded
-	* Vertical raycast downward to "Ground" layer
+	* Vertical raycast downward to "Grund" layer
 	*
 	* @return true is grounded
 	*/
     public bool isGrounded() {
     	RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
-    	RaycastHit2D hitPlayer = Physics2D.Raycast(transform.position, Vector2.down, 
-    						distanceToGround, 1 << LayerMask.NameToLayer("Player"));
-    	// Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
-    	if (hitGround.collider != null || hitPlayer.collider != null) {
+    	Debug.DrawRay(transform.position, Vector2.down * distanceToGround, Color.green);
+    	if (hitGround.collider != null) {
         	return true;
     	}
     	return false;
     }
 
-    void OnTriggerStay2D(Collider2D colliderStay) {
-        isColliding = true;
-    }
-
-    void OnTriggerExit2D(Collider2D colliderOnExit) {
-        isColliding = false;
-    }
-
-    /*
-	* Player Movement Animation
-	*/
     void animateMovement() {
     	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
     }
