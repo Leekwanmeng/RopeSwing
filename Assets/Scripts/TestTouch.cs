@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class TestTouch : MonoBehaviour {
 
-	public Text m_Text1;
+	public Text Text1;
+    public Text Text2;
+    public Text Text3;
+
 
 	void Start() {
-		
 	}
 
     void Update()
@@ -19,7 +21,9 @@ public class TestTouch : MonoBehaviour {
 
 
         //Update the Text on the screen depending on current position of the touch each frame
-         m_Text1.text = "Tilt: " + Input.acceleration;
+         Text1.text = "Tilt: " + Input.acceleration;
+         Text2.text = "H" + GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().horizontalInput;
+         Text3.text = "V" +  GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().verticalInput;
         // m_Text2.text = "Magnitude: " + GameObject.FindWithTag("Player").
         // 				GetComponent<PlayerMovement>().magnitude.ToString();
         //m_Text1.text = "Tilt: " + Input.acceleration;

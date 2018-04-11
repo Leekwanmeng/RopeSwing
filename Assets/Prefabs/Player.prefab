@@ -160,14 +160,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingForce: 3.2
-  walkForce: 0.02
   maxSwingSpeed: 3
+  walkingSpeed: 1
   maxWalkSpeed: 3.5
   climbingStep: 0.05
+  distanceToGround: 1.6
   xTiltThreshold: 0.5
   yTiltThreshold: 0.6
   magnitude: 0
   facingRight: 1
+  ropeHook: {x: 0, y: 0}
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,11 +225,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04d468ab98596d45b3d04b689d0097e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 120754690892108498}
   ropeActive: 0
   startPosition: {x: 0, y: 0}
   endPosition: {x: 0, y: 0}
   rope: {fileID: 0}
+  ropeHingeAnchor: {fileID: 1097529466514846, guid: 513a838134c07c749a68c6ca67a542cf,
+    type: 2}
+  ropeLayerMask:
+    serializedVersion: 2
+    m_Bits: 2305
 --- !u!114 &114777010972455242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -300,7 +306,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.1
+    widthMultiplier: 0.08
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -345,7 +351,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 2
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
@@ -402,7 +408,8 @@ DistanceJoint2D:
   m_Enabled: 1
   serializedVersion: 4
   m_EnableCollision: 1
-  m_ConnectedRigidBody: {fileID: 0}
+  m_ConnectedRigidBody: {fileID: 50870578570031172, guid: 513a838134c07c749a68c6ca67a542cf,
+    type: 2}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0

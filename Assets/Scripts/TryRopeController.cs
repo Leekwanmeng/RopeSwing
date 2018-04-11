@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
+using System.Linq;
 
 public class TryRopeController : NetworkBehaviour {
 
@@ -12,14 +13,18 @@ public class TryRopeController : NetworkBehaviour {
 	public Vector2 startPosition;
 	[SyncVar]
 	public Vector2 endPosition;
+	
 	public DistanceJoint2D rope;
-	public LineRenderer lineRenderer;
-	public PlayerMovement playerMovement;
 
 	/*Private Fields*/
+	private LineRenderer lineRenderer;
 	private Animator animator;
+	private PlayerMovement playerMovement;
+	
+	private bool distanceSet;
 	private Vector2 touchPosition;
-	private LineSpawn lineSpawn;
+	private float ropeMaxDistance = 20f;
+	
 
 	public override void OnStartLocalPlayer() {
          Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
@@ -41,6 +46,7 @@ public class TryRopeController : NetworkBehaviour {
 		TouchDetection();
 		ifRopeActive();
 		// CmdRenderRope();
+
 		animateSwing();
 	}
 
@@ -79,26 +85,7 @@ public class TryRopeController : NetworkBehaviour {
 	}
 
 
-	/*
-	* Updates after all update functions called
-	* Adds LineRenderer to existing rope (from player to anchor)
-	*/
-	// [Command]
-	// void CmdRenderRope() {
-	// 	GameObject line = (GameObject)Instantiate(
-	// 				linePrefab,
-	// 				transform.position,
-	// 				transform.rotation);
 
-	// 	lineSpawn = line.GetComponent<LineSpawn>();
-	// 	if (rope != null) {
-	// 		lineSpawn.setStartPosition(transform.position);
-	// 		lineSpawn.setEndPosition(rope.connectedAnchor);
-	// 		// lineSpawn.RenderRope();
-	// 	} 
-	// 	// else {
-	// 		// lineSpawn.UnrenderRope();
-	// 	// }
 
 	// 	NetworkServer.SpawnWithClientAuthority(line, gameObject);
 
@@ -138,7 +125,7 @@ public class TryRopeController : NetworkBehaviour {
 					(new Vector2(touch.position.x, touch.position.y));
 					ShootRope(touchPosition);
 				} else if (ropeActive) {
-					DestroyRope();
+					ResetRope();
 				}
 			}
 		}
@@ -157,13 +144,16 @@ public class TryRopeController : NetworkBehaviour {
 		Vector2 direction = touchPosition - playerPosition;
 
 		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
-							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
+							ropeMaxDistance, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
-			rope.enabled = true;
+			// Jump slightly
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
 			rope.enableCollision = true;
 			rope.distance = hit.distance;
 			rope.connectedAnchor = hit.point;
+			rope.enabled = true;
+
 			playerMovement.ropeHook = hit.point;
 		}
 
@@ -172,10 +162,13 @@ public class TryRopeController : NetworkBehaviour {
 
 
 	/*
-	* Destroys rope if exists
+	* Resets all rope / hook related params
 	*/
-	void DestroyRope() {
+	void ResetRope() {
 		rope.enabled = false;
+		lineRenderer.positionCount = 2;
+		lineRenderer.SetPosition(0, transform.position);
+		lineRenderer.SetPosition(1, transform.position);
 	}
 
 

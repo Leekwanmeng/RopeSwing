@@ -9,12 +9,12 @@ using System;
 public class PlayerMovement : NetworkBehaviour {
 
 	/*Public Fields*/
-	public float swingForce = 3.5f;
-	public float maxSwingSpeed = 3f;
+	public float swingForce = 10f;
+	public float maxSwingSpeed = 4f;
 
-	public float walkingSpeed = 1f;
-	public float maxWalkSpeed = 4f;
-	public float climbingStep = 0.05f;
+	public float walkingSpeed = 10f;
+	public float maxWalkSpeed = 5f;
+	public float climbingStep = 2f;
 	public float distanceToGround = 1.6f;
 
 	public float xTiltThreshold = 0.5f;
@@ -30,6 +30,10 @@ public class PlayerMovement : NetworkBehaviour {
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
  	private Animator animator;
+ 	private bool isColliding;
+ 	
+ 	public float verticalInput;
+ 	public float horizontalInput;
 
     // TESTING
 
@@ -84,14 +88,19 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 		velocity = rb2d.velocity;
 		magnitude = velocity.magnitude;
-
+		checkMovement();
 		checkPlayerDirection();
 		animateMovement();
 	}
 
 	// Update per physics frame
 	void FixedUpdate() {
-		movement();
+		if (tryRopeController.ropeActive) {
+			climb();
+			swing();
+		} else if (!tryRopeController.ropeActive && isGrounded()) {
+			walk();
+		}
 	}
 
 	// Last Update
@@ -100,48 +109,55 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 	/*
-	* Called to determine if player can move, based on mobile Input
+	* Called to determine if player can move, based on Mobile Input
 	* Assigns type of movement
 	*/
-	void movement() {
-		if (tryRopeController.ropeActive) {
-			if ((Input.acceleration.y > yTiltThreshold) || (Input.acceleration.y < -yTiltThreshold)) {
-				climb();
-			} else if ((Input.acceleration.x > xTiltThreshold) || (Input.acceleration.x < -xTiltThreshold)) {
-				swing();
-			}
-		} else if (!tryRopeController.ropeActive && isGrounded()) {
-			walk();
+	void checkMovement() {
+		if (Input.acceleration.y > yTiltThreshold || 
+			Input.acceleration.y < -(yTiltThreshold + 0.2f)) {
+			verticalInput = Input.acceleration.y;
+		} else {
+			verticalInput = 0;
+		}
+
+		if (Input.acceleration.x > xTiltThreshold || 
+			Input.acceleration.x < -xTiltThreshold) {
+			horizontalInput = Input.acceleration.x;
+		} else {
+			horizontalInput = 0;
 		}
 	}
+
+
 
 	/*
 	* Player Climbing movement
 	*/
 	void climb() {
-		if (Input.acceleration.y > yTiltThreshold) {
-			tryRopeController.rope.distance -= climbingStep;
-		} else if (Input.acceleration.y < -(yTiltThreshold + 0.2f)) {
-			tryRopeController.rope.distance += climbingStep;
+		if (verticalInput > 0 && !isColliding) {
+			tryRopeController.rope.distance -= Time.deltaTime * climbingStep;
+		} else if (verticalInput < 0) {
+			tryRopeController.rope.distance += Time.deltaTime * climbingStep;
 		}
 	}
+
 
 	/*
 	* Player Swinging movement
 	*/
 	void swing() {
 		if (magnitude < maxSwingSpeed) {
-			var playerToHookDirection = (ropeHook - (Vector2) transform.position).normalized;
-			Vector2 perpendicularDirection;
+			Vector2 playerToHookDirection = (ropeHook - (Vector2) transform.position).normalized;
+			Vector2 perpendicularDirection = new Vector2(0f,1f);
 
-			if (Input.acceleration.x > xTiltThreshold) {
+			if (horizontalInput > 0) {
 				perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-			} else if (Input.acceleration.x < -xTiltThreshold) {
+			} else if (horizontalInput < 0) {
 				perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
 			}
 
-			var force = perpendicularDirection * swingForce;
-			rb2d.AddForce(force, ForceMode2D.Force);
+			Vector2 force = perpendicularDirection * swingForce;
+			rb2d.AddForce(force);
 		}
 	}
 
@@ -150,10 +166,9 @@ public class PlayerMovement : NetworkBehaviour {
 	*/
 	void walk() {
 		if (magnitude < maxWalkSpeed) {
-			if ((Input.acceleration.x > xTiltThreshold) || (Input.acceleration.x < -xTiltThreshold)) {
-				var groundForce = walkingSpeed * 2f;
-            	rb2d.AddForce(new Vector2((Input.acceleration.x * groundForce - rb2d.velocity.x) * groundForce, 0));
-            	rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y)
+			if (horizontalInput != 0) {
+            	rb2d.AddForce(new Vector2((horizontalInput * walkingSpeed - rb2d.velocity.x) * walkingSpeed, 0));
+            	rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
 			}
 		}
 	}
@@ -164,7 +179,7 @@ public class PlayerMovement : NetworkBehaviour {
 	* Checks player's horizontal movement and determines if player should flip
 	*/
 	public void checkPlayerDirection() {
-		if ((velocity.x > 0.05f && !facingRight) || (velocity.x < 0.05f && facingRight)) {
+		if ((velocity.x > 0.1f && !facingRight) || (velocity.x < 0.1f && facingRight)) {
 			facingRight = !facingRight;
 			syncPos.CmdFlipSprite(facingRight);
 		}
@@ -206,6 +221,14 @@ public class PlayerMovement : NetworkBehaviour {
         	return true;
     	}
     	return false;
+    }
+
+    void OnTriggerStay2D(Collider2D colliderStay) {
+        isColliding = true;
+    }
+
+    void OnTriggerExit2D(Collider2D colliderOnExit) {
+        isColliding = false;
     }
 
     /*
