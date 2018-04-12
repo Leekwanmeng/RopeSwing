@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingForce: 10
-  walkForce: 8
+  walkForce: 7
   maxSwingSpeed: 5
   maxWalkSpeed: 4
   climbStep: 3
@@ -169,6 +169,7 @@ MonoBehaviour:
   facingRight: 1
   verticalInput: 0
   horizontalInput: 0
+  ropeHook: {x: 0, y: 0}
 --- !u!114 &114226080213904944
 MonoBehaviour:
   m_ObjectHideFlags: 1

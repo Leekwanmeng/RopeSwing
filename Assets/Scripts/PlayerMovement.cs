@@ -22,6 +22,8 @@ public class PlayerMovement : NetworkBehaviour {
 	public float verticalInput;
 	public float horizontalInput;
 
+	public Vector2 ropeHook;
+
 	/*Private fields*/
 	private float distanceToGround = 1.6f;
 	private float distanceToCeiling = 1.6f;
@@ -145,10 +147,17 @@ public class PlayerMovement : NetworkBehaviour {
 	}
 
 	void checkSwing() {
-		if (horizontalInput > 0) {
-			rb2d.AddForce(Vector2.right * swingForce);
-		} else if (horizontalInput < 0) {
-			rb2d.AddForce(Vector2.left * swingForce);
+		if (ropeHook != Vector2.zero) {
+			Vector2 playerToHookDirection = (ropeHook - (Vector2) transform.position).normalized;
+			Vector2 perpendicularDirection;
+
+			if (horizontalInput > 0) {
+				perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+				rb2d.AddForce(perpendicularDirection * swingForce);
+			} else if (horizontalInput < 0) {
+				perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+				rb2d.AddForce(perpendicularDirection * swingForce);
+			}
 		}
 	}
 

@@ -20,6 +20,7 @@ public class TryRopeController : NetworkBehaviour {
 	private Animator animator;
 	private Vector2 touchPosition;
 	private Vector2 playerPosition;
+	private PlayerMovement playerMovement;
 
 	public override void OnStartLocalPlayer() {
          Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
@@ -32,6 +33,7 @@ public class TryRopeController : NetworkBehaviour {
 		lineRenderer.enabled = false;
 		rope.enabled = false;
 		playerPosition = transform.position;
+		playerMovement = GetComponent<PlayerMovement>();
 	}
 	
 	// Update is called once per frame
@@ -141,10 +143,12 @@ public class TryRopeController : NetworkBehaviour {
 
 			transform.GetComponent<Rigidbody2D>().AddForce(
 				new Vector2(0f, 5f), ForceMode2D.Impulse);
+			playerMovement.ropeHook = hit.point;
 			rope.enableCollision = true;
 			rope.distance = Vector2.Distance(playerPosition, hit.point);
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
+			
 		}
 		// AssignPositions(playerPosition, rope.connectedAnchor);
 	}
@@ -160,6 +164,7 @@ public class TryRopeController : NetworkBehaviour {
 		lineRenderer.positionCount = 2;
 		lineRenderer.SetPosition(0, playerPosition);
 		lineRenderer.SetPosition(1, playerPosition);
+		playerMovement.ropeHook = Vector2.zero;
 	}
 
 
