@@ -9,18 +9,24 @@ public class TryRopeController : NetworkBehaviour {
 	
 	[SyncVar]
 	public bool ropeActive;
-	// [SyncVar (hook = "OnRopeActve")]
-	// public Vector2 startPosition;
-	// [SyncVar]
-	// public Vector2 endPosition;
+	[SyncVar (hook = "RenderLine")]
+	public Vector2 startPosition;
+	public Vector2 endPosition;
 	public DistanceJoint2D rope;
 	public LineRenderer lineRenderer;
+	public GameObject ropeRendererPrefab;
+	
+
+
 
 	/*Private Fields*/
 	private Animator animator;
 	private Vector2 touchPosition;
 	private Vector2 playerPosition;
 	private PlayerMovement playerMovement;
+	private GameObject ropeRendererObject;
+	private LineRenderer ropeRenderer;
+	private Vector2 ropeToHandOffset = new Vector2(0f, 0.4f);
 
 	public override void OnStartLocalPlayer() {
          Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
@@ -34,6 +40,7 @@ public class TryRopeController : NetworkBehaviour {
 		rope.enabled = false;
 		playerPosition = transform.position;
 		playerMovement = GetComponent<PlayerMovement>();
+		
 	}
 	
 	// Update is called once per frame
@@ -44,58 +51,82 @@ public class TryRopeController : NetworkBehaviour {
 		playerPosition = transform.position;
 		TouchDetection();
 		ifRopeActive();
-		LineRender();
-		// CmdRenderRope();
+		ToRenderLine();
+		// if (ropeActive) {
+		// 	ropeRenderer.enabled = true;
+		// 	ropeRenderer.positionCount = 2;
+		// 	ropeRenderer.SetPosition(0, playerPosition);
+		// 	ropeRenderer.SetPosition(1, playerPosition);
+		// }
+		// CmdSpawn();
 		animateSwing();
 		
 	}
 
-	// Update per physics frame
-	void FixedUpdate() {
-	}
-
-	// Last update
-	void LateUpdate() {
-		
-	}
-
-	// [Client]
-	// void AssignPositions(Vector2 startPos, Vector2 endPos) {
-	// 	CmdPositions(startPos, endPos);
-	// }
-
 
 	// [Command]
-	// void CmdPositions(Vector2 startPos, Vector2 endPos) {
-	// 	startPosition = startPos;
-	// 	endPosition = endPos;
+	// void CmdSpawn() {
+	//     ropeRendererObject = (GameObject) Instantiate(
+	//        ropeRendererPrefab, 
+	//        (Vector2) transform.position + new Vector2(0f, 0.3f), 
+	//        Quaternion.identity);
+
+	    
+	// 	ropeRenderer = ropeRendererObject.GetComponent<LineRenderer>();
+	// 	ropeRenderer.enabled = true;
+	// 	ropeRenderer.positionCount = 2;
+	// 	ropeRenderer.SetPosition(0, playerPosition);
+	// 	ropeRenderer.SetPosition(1, rope.connectedAnchor);
+		
+
+	//     NetworkServer.SpawnWithClientAuthority(ropeRendererObject, connectionToClient);
 	// }
 
-
-
-	void LineRender() {
-		if (!rope.enabled) {
-			return;
+	void ToRenderLine() {
+		if (ropeActive) {
+			CmdSetEndPosition();
+			CmdSetStartPosition();
+		} else {
+			CmdResetStartPosition();
+			CmdResetEndPosition();
 		}
-		Vector2 playerHandPosition = playerPosition + new Vector2(0f, 0.2f);
-		lineRenderer.positionCount = 2;
-		lineRenderer.SetPosition(0, playerHandPosition);
-		lineRenderer.SetPosition(1, rope.connectedAnchor);
-		lineRenderer.enabled = true;
 	}
 
+	[Command]
+	void CmdSetStartPosition() {
+		startPosition = playerPosition + ropeToHandOffset;
+	}
 
-	// 	// if (rope != null) {
-	// 	// 	lineRenderer.enabled = true;
-	// 	// 	lineRenderer.positionCount = 2;
-	// 	// 	lineRenderer.SetPosition(0, gameObject.transform.position);
-	// 	// 	lineRenderer.SetPosition(1, rope.connectedAnchor);
-	// 	// 	animator.SetBool("ropeActive", true);
-	// 	// } else {
-	// 	// 	lineRenderer.enabled = false;
-	// 	// 	animator.SetBool("ropeActive", false);
-	// 	// }
-	// }
+	[Command]
+	void CmdResetStartPosition() {
+		startPosition = Vector2.zero;
+	}
+
+	[Command]
+	void CmdSetEndPosition() {
+		endPosition = rope.connectedAnchor;
+	}
+
+	[Command]
+	void CmdResetEndPosition() {
+		endPosition = Vector2.zero;
+	}
+
+	void RenderLine(Vector2 newStartPosition) {
+		startPosition = newStartPosition;
+		
+		if (ropeActive) {
+			if (startPosition == Vector2.zero) {
+				lineRenderer.enabled = false;
+				lineRenderer.SetPosition(0, startPosition);
+				lineRenderer.SetPosition(1, startPosition);
+			} else {
+				lineRenderer.SetPosition(0, startPosition);
+				lineRenderer.SetPosition(1, endPosition);
+				lineRenderer.enabled = true;
+			}
+		}
+	}
 
 
 	/*
@@ -145,7 +176,7 @@ public class TryRopeController : NetworkBehaviour {
 				new Vector2(0f, 5f), ForceMode2D.Impulse);
 			playerMovement.ropeHook = hit.point;
 			rope.enableCollision = true;
-			rope.distance = Vector2.Distance(playerPosition, hit.point);
+			rope.distance = Vector2.Distance(playerPosition + ropeToHandOffset, hit.point);
 			rope.connectedAnchor = hit.point;
 			rope.enabled = true;
 			

@@ -26,7 +26,6 @@ public class PlayerDeath : NetworkBehaviour {
 
 	}
 
-	[Client]
 	void setDeath() {
 		CmdSetDead();
 	}

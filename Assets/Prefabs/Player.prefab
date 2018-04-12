@@ -226,8 +226,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ropeActive: 0
+  startPosition: {x: 0, y: 0}
   rope: {fileID: 0}
   lineRenderer: {fileID: 0}
+  ropeRendererPrefab: {fileID: 1581169544859232, guid: 3d93d1e7c172dce4cb1ea3baa54e7f8d,
+    type: 2}
+  ropeRenderer: {fileID: 0}
 --- !u!114 &114777010972455242
 MonoBehaviour:
   m_ObjectHideFlags: 1

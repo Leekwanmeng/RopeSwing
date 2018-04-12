@@ -15,7 +15,7 @@ public class PlayerMovement : NetworkBehaviour {
 	public float maxWalkSpeed = 4f;
 	public float climbStep = 3f;
 
-	public float tiltThreshold = 0.5f;
+	public float tiltThreshold = 0.6f;
 	public float magnitude;
 	public bool facingRight = true;
 
@@ -27,6 +27,7 @@ public class PlayerMovement : NetworkBehaviour {
 	/*Private fields*/
 	private float distanceToGround = 1.6f;
 	private float distanceToCeiling = 1.6f;
+	private Vector2 ropeToHandOffset = new Vector2(0f, 0.4f);
 
 	private TryRopeController tryRopeController;
 	private Rigidbody2D rb2d = null;
@@ -91,7 +92,7 @@ public class PlayerMovement : NetworkBehaviour {
 		checkClimb();
 		checkPlayerDirection();
 		animateMovement();
-		
+		animateGround();
 	}
 
 	// Update per physics frame
@@ -114,7 +115,7 @@ public class PlayerMovement : NetworkBehaviour {
 	* Assigns type of movement
 	*/
 	void checkMovement() {
-		if ((Input.acceleration.y > tiltThreshold) || (Input.acceleration.y < -tiltThreshold)) {
+		if ((Input.acceleration.y > tiltThreshold) || (Input.acceleration.y < -(tiltThreshold + 0.15f))) {
 			verticalInput = Input.acceleration.y;
 		} else {
 			verticalInput = 0;
@@ -128,20 +129,19 @@ public class PlayerMovement : NetworkBehaviour {
 
 
 	void checkClimb() {
-		
 		if (verticalInput > 0) {
 			RaycastHit2D hitCeiling = Physics2D.Raycast(transform.position, Vector2.up, 
     						distanceToCeiling, 1 << LayerMask.NameToLayer("Wall"));
 
 			if (hitCeiling.collider != null) return;
-
 			tryRopeController.rope.distance -= Time.deltaTime * climbStep;
+			rb2d.AddForce(Vector2.up);
 		} else if (verticalInput < 0) {
 			RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
 			if (hitGround.collider != null) return;
-
 			tryRopeController.rope.distance += Time.deltaTime * climbStep;
+			rb2d.AddForce(Vector2.down);
 		}
 		
 	}
@@ -221,6 +221,14 @@ public class PlayerMovement : NetworkBehaviour {
 
     void animateMovement() {
     	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
+    }
+
+    void animateGround() {
+    	if (isGrounded()) {
+    		animator.SetBool("grounded", true);
+    	} else {
+    		animator.SetBool("grounded", false);
+    	}
     }
 
 }

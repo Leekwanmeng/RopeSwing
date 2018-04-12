@@ -611,7 +611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &122285352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2252,6 +2252,8 @@ GameObject:
   - component: {fileID: 674312513}
   - component: {fileID: 674312512}
   - component: {fileID: 674312515}
+  - component: {fileID: 674312517}
+  - component: {fileID: 674312516}
   m_Layer: 10
   m_Name: Moving Platform
   m_TagString: Untagged
@@ -2373,6 +2375,59 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &674312516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 674312511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 0
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &674312517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 674312511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 216
+    i1: 188
+    i2: 202
+    i3: 159
+    i4: 174
+    i5: 184
+    i6: 209
+    i7: 228
+    i8: 200
+    i9: 4
+    i10: 245
+    i11: 226
+    i12: 177
+    i13: 226
+    i14: 38
+    i15: 48
+  m_ServerOnly: 1
+  m_LocalPlayerAuthority: 0
 --- !u!1 &682048158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4855,7 +4910,7 @@ MonoBehaviour:
   m_OfflineScene: 
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 0}
+  - {fileID: 1581169544859232, guid: 3d93d1e7c172dce4cb1ea3baa54e7f8d, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
