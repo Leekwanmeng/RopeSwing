@@ -27,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour {
 	/*Private fields*/
 	private float distanceToGround = 1.6f;
 	private float distanceToCeiling = 1.6f;
-	private Vector2 ropeToHandOffset = new Vector2(0f, 0.4f);
+	private Vector2 ropeToHandOffset = new Vector2(0f, 0.5f);
 
 	private TryRopeController tryRopeController;
 	private Rigidbody2D rb2d = null;
