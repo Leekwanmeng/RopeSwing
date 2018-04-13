@@ -6,18 +6,19 @@ using UnityEngine;
 public class TryRopeController : NetworkBehaviour {
 
 	/*Public Fields*/
-	
 	[SyncVar]
 	public bool ropeActive;
-	[SyncVar (hook = "RenderLine")]
+	[SyncVar (hook = "SetStartPosition")]
 	public Vector2 startPosition;
+	[SyncVar (hook = "SetEndPosition")]
 	public Vector2 endPosition;
+	[SyncVar (hook = "RenderLine")]
+	public bool lineRendererEnable;
+
 	public DistanceJoint2D rope;
 	public LineRenderer lineRenderer;
 	public GameObject ropeRendererPrefab;
 	
-
-
 
 	/*Private Fields*/
 	private Animator animator;
@@ -26,6 +27,7 @@ public class TryRopeController : NetworkBehaviour {
 	private PlayerMovement playerMovement;
 	private GameObject ropeRendererObject;
 	private LineRenderer ropeRenderer;
+	private float maxRopeDistance = 15f;
 	private Vector2 ropeToHandOffset = new Vector2(0f, 0.4f);
 
 	public override void OnStartLocalPlayer() {
@@ -51,7 +53,7 @@ public class TryRopeController : NetworkBehaviour {
 		playerPosition = transform.position;
 		TouchDetection();
 		ifRopeActive();
-		ToRenderLine();
+		SetStartEnd();
 		// if (ropeActive) {
 		// 	ropeRenderer.enabled = true;
 		// 	ropeRenderer.positionCount = 2;
@@ -59,8 +61,28 @@ public class TryRopeController : NetworkBehaviour {
 		// 	ropeRenderer.SetPosition(1, playerPosition);
 		// }
 		// CmdSpawn();
+		CheckRender();
 		animateSwing();
 		
+	}
+
+	// HOOK
+	void SetStartPosition(Vector2 position) {
+		lineRenderer.SetPosition(0, position);
+	}
+
+	// HOOK
+	void SetEndPosition(Vector2 position) {
+		lineRenderer.SetPosition(1, position);
+	}
+
+	// HOOK
+	void RenderLine(bool enable) {		
+		if (enable) {
+			lineRenderer.enabled = true;
+		} else {
+			lineRenderer.enabled = false;
+		}
 	}
 
 
@@ -82,11 +104,42 @@ public class TryRopeController : NetworkBehaviour {
 	//     NetworkServer.SpawnWithClientAuthority(ropeRendererObject, connectionToClient);
 	// }
 
-	void ToRenderLine() {
+
+	void CheckRender() {
+		if (!isServer) {
+			return;
+		}
+
+		if (ropeActive) {
+			RpcRenderRope();
+		} else {
+			RpcUnrenderRope();
+		}
+	}
+
+	[ClientRpc]
+	void RpcRenderRope() {
+		if (isLocalPlayer) {
+			lineRenderer.enabled = true;
+		}
+	}
+
+	[ClientRpc]
+	void RpcUnrenderRope() {
+		if (isLocalPlayer) {
+			lineRenderer.enabled = false;
+		}	
+	}
+
+
+
+	void SetStartEnd() {
 		if (ropeActive) {
 			CmdSetEndPosition();
 			CmdSetStartPosition();
+			CmdLineRendererEnable();
 		} else {
+			CmdLineRendererDisable();
 			CmdResetStartPosition();
 			CmdResetEndPosition();
 		}
@@ -112,21 +165,16 @@ public class TryRopeController : NetworkBehaviour {
 		endPosition = Vector2.zero;
 	}
 
-	void RenderLine(Vector2 newStartPosition) {
-		startPosition = newStartPosition;
-		
-		if (ropeActive) {
-			if (startPosition == Vector2.zero) {
-				lineRenderer.enabled = false;
-				lineRenderer.SetPosition(0, startPosition);
-				lineRenderer.SetPosition(1, startPosition);
-			} else {
-				lineRenderer.SetPosition(0, startPosition);
-				lineRenderer.SetPosition(1, endPosition);
-				lineRenderer.enabled = true;
-			}
-		}
+	[Command]
+	void CmdLineRendererEnable() {
+		lineRendererEnable = true;
 	}
+
+	[Command]
+	void CmdLineRendererDisable() {
+		lineRendererEnable = false;
+	}
+
 
 
 	/*
@@ -168,7 +216,7 @@ public class TryRopeController : NetworkBehaviour {
 		Vector2 direction = touchPosition - playerPosition;
 
 		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
-							Mathf.Infinity, 1 << LayerMask.NameToLayer("Wall"));
+							maxRopeDistance, 1 << LayerMask.NameToLayer("Wall"));
 
 		if (hit.collider != null) {
 
