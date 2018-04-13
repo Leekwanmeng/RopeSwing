@@ -37,7 +37,7 @@ public class PlatformController : RaycastController
 
     private void Update()
     {
-        if (triggered) {
+        //if (triggered) {
 
 
             UpdateRaycastOrigins();
@@ -51,7 +51,7 @@ public class PlatformController : RaycastController
             MovePassengers(false);
 
 
-        }
+        //}
     }
 
     private float Ease(float x)
