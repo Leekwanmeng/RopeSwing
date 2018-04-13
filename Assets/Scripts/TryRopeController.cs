@@ -49,9 +49,6 @@ public class TryRopeController : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// if (!isLocalPlayer) {
-		// 	return;
-		// }
 		playerPosition = transform.position;
 		TouchDetection();
 		ifRopeActive();
@@ -62,6 +59,8 @@ public class TryRopeController : NetworkBehaviour {
 		animateSwing();
 	}
 
+
+	[Client]
 	void SetRopeJoint() {
 		if (!isLocalPlayer) {
 			return;
@@ -78,42 +77,12 @@ public class TryRopeController : NetworkBehaviour {
 
 
 
-	void CheckRender() {
-		if (!isServer) {
-			return;
-		}
-
-		if (ropeActive) {
-			RpcRenderRope();
-		} else {
-			RpcUnrenderRope();
-		}
-	}
-
-	[ClientRpc]
-	void RpcRenderRope() {
-		if (isLocalPlayer) {
-			if (startPosition != Vector2.zero && 
-			endPosition != Vector2.zero) {
-				lineRenderer.enabled = true;
-			}
-		}
-	}
-
-	[ClientRpc]
-	void RpcUnrenderRope() {
-		if (isLocalPlayer) {
-			lineRenderer.enabled = false;
-		}	
-	}
-
 
 	[Client]
 	void SetStartEnd() {
 		if (!isLocalPlayer) {
 			return;
 		}
-
 		if (ropeActive) {
 			CmdSetEndPosition();
 			CmdSetStartPosition();
@@ -123,24 +92,12 @@ public class TryRopeController : NetworkBehaviour {
 		}
 	}
 
-	[Client]
-	void SetEnable() {
-		if (!isLocalPlayer) {
-			return;
-		}
-		if (ropeActive) {
-			CmdLineRendererEnable();
-		} else {
-			CmdLineRendererDisable();
-		}
-	}
-
 	[Command]
 	void CmdSetStartPosition() {
 		startPosition = playerPosition + ropeToHandOffset;
 	}
 
-	 [Command]
+	[Command]
 	void CmdResetStartPosition() {
 		startPosition = Vector2.zero;
 	}
@@ -153,16 +110,6 @@ public class TryRopeController : NetworkBehaviour {
 	[Command]
 	void CmdResetEndPosition() {
 		endPosition = Vector2.zero;
-	}
-
-	[Command]
-	void CmdLineRendererEnable() {
-		lineRendererEnable = true;
-	}
-
-	[Command]
-	void CmdLineRendererDisable() {
-		lineRendererEnable = false;
 	}
 
 	// HOOK
@@ -184,6 +131,31 @@ public class TryRopeController : NetworkBehaviour {
 		lineRenderer.SetPosition(1, endPosition);
 	}
 
+	
+
+
+	[Client]
+	void SetEnable() {
+		if (!isLocalPlayer) {
+			return;
+		}
+		if (ropeActive) {
+			CmdLineRendererEnable();
+		} else {
+			CmdLineRendererDisable();
+		}
+	}
+
+	[Command]
+	void CmdLineRendererEnable() {
+		lineRendererEnable = true;
+	}
+
+	[Command]
+	void CmdLineRendererDisable() {
+		lineRendererEnable = false;
+	}
+
 	// HOOK
 	void RenderLine(bool enable) {
 		// Only update SyncVar if loacl client (it auto-updates in server/host)
@@ -197,6 +169,37 @@ public class TryRopeController : NetworkBehaviour {
 			lineRenderer.enabled = false;
 		}
 	}
+
+
+
+	void CheckRender() {
+		if (!isServer) {
+			return;
+		}
+
+		if (ropeActive) {
+			RpcRenderRope();
+		} else {
+			RpcUnrenderRope();
+		}
+	}
+
+	[ClientRpc]
+	void RpcRenderRope() {
+		if (isLocalPlayer) {
+			lineRenderer.SetPosition(0, startPosition);
+			lineRenderer.SetPosition(1, endPosition);
+			lineRenderer.enabled = true;
+		}
+	}
+
+	[ClientRpc]
+	void RpcUnrenderRope() {
+		if (isLocalPlayer) {
+			lineRenderer.enabled = false;
+		}	
+	}
+
 
 
 
@@ -247,7 +250,7 @@ public class TryRopeController : NetworkBehaviour {
 		if (hit.collider != null) {
 
 			transform.GetComponent<Rigidbody2D>().AddForce(
-				new Vector2(0f, 5f), ForceMode2D.Impulse);
+				new Vector2(0f, 4f), ForceMode2D.Impulse);
 			playerMovement.ropeHook = hit.point;
 			rope.enableCollision = true;
 			rope.distance = Vector2.Distance(playerPosition + ropeToHandOffset, hit.point);
@@ -255,7 +258,6 @@ public class TryRopeController : NetworkBehaviour {
 			rope.enabled = true;
 			
 		}
-		// AssignPositions(playerPosition, rope.connectedAnchor);
 	}
 
 

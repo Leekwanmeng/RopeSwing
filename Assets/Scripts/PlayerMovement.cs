@@ -15,7 +15,7 @@ public class PlayerMovement : NetworkBehaviour {
 	public float maxWalkSpeed = 4f;
 	public float climbStep = 3f;
 
-	public float tiltThreshold = 0.6f;
+	public float tiltThreshold = 0.5f;
 	public float magnitude;
 	public bool facingRight = true;
 
@@ -115,7 +115,7 @@ public class PlayerMovement : NetworkBehaviour {
 	* Assigns type of movement
 	*/
 	void checkMovement() {
-		if ((Input.acceleration.y > tiltThreshold) || (Input.acceleration.y < -(tiltThreshold + 0.15f))) {
+		if ((Input.acceleration.y > tiltThreshold + 0.1f) || (Input.acceleration.y < -(tiltThreshold + 0.25f))) {
 			verticalInput = Input.acceleration.y;
 		} else {
 			verticalInput = 0;
