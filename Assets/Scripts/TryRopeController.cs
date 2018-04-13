@@ -56,7 +56,8 @@ public class TryRopeController : NetworkBehaviour {
 		TouchDetection();
 		ifRopeActive();
 		SetRopeJoint();
-		SetStartEndEnable();
+		SetStartEnd();
+		SetEnable();
 		CheckRender();
 		animateSwing();
 	}
@@ -108,7 +109,7 @@ public class TryRopeController : NetworkBehaviour {
 
 
 	[Client]
-	void SetStartEndEnable() {
+	void SetStartEnd() {
 		if (!isLocalPlayer) {
 			return;
 		}
@@ -116,11 +117,21 @@ public class TryRopeController : NetworkBehaviour {
 		if (ropeActive) {
 			CmdSetEndPosition();
 			CmdSetStartPosition();
+		} else {
+			CmdResetStartPosition();
+			CmdResetEndPosition();
+		}
+	}
+
+	[Client]
+	void SetEnable() {
+		if (!isLocalPlayer) {
+			return;
+		}
+		if (ropeActive) {
 			CmdLineRendererEnable();
 		} else {
 			CmdLineRendererDisable();
-			CmdResetStartPosition();
-			CmdResetEndPosition();
 		}
 	}
 
@@ -129,7 +140,7 @@ public class TryRopeController : NetworkBehaviour {
 		startPosition = playerPosition + ropeToHandOffset;
 	}
 
-	[Command]
+	 [Command]
 	void CmdResetStartPosition() {
 		startPosition = Vector2.zero;
 	}
@@ -169,6 +180,7 @@ public class TryRopeController : NetworkBehaviour {
 		if (!isServer) {
 			endPosition = position;
 		}
+
 		lineRenderer.SetPosition(1, endPosition);
 	}
 
@@ -178,6 +190,7 @@ public class TryRopeController : NetworkBehaviour {
 		if (!isServer) {
 			lineRendererEnable = enable;		
 		}
+
 		if (lineRendererEnable) {
 			lineRenderer.enabled = true;
 		} else {
