@@ -14,7 +14,6 @@ public class RopeController : NetworkBehaviour {
 	private Animator animator;
 	private DistanceJoint2D rope;
 	private Vector2 touchPosition;
-	private LineSpawn lineSpawn;
 
 	void Start() {
 		lineRenderer = GetComponent<LineRenderer>();
@@ -46,34 +45,6 @@ public class RopeController : NetworkBehaviour {
 	*/
 	[Command]
 	void CmdRenderRope() {
-		GameObject line = (GameObject)Instantiate(
-					linePrefab,
-					transform.position,
-					transform.rotation);
-
-		lineSpawn = line.GetComponent<LineSpawn>();
-		if (rope != null) {
-			lineSpawn.setStartPosition(transform.position);
-			lineSpawn.setEndPosition(rope.connectedAnchor);
-			// lineSpawn.RenderRope();
-		} 
-		// else {
-			// lineSpawn.UnrenderRope();
-		// }
-
-		NetworkServer.SpawnWithClientAuthority(line, gameObject);
-
-
-		// if (rope != null) {
-		// 	lineRenderer.enabled = true;
-		// 	lineRenderer.positionCount = 2;
-		// 	lineRenderer.SetPosition(0, gameObject.transform.position);
-		// 	lineRenderer.SetPosition(1, rope.connectedAnchor);
-		// 	animator.SetBool("ropeActive", true);
-		// } else {
-		// 	lineRenderer.enabled = false;
-		// 	animator.SetBool("ropeActive", false);
-		// }
 	}
 
 
