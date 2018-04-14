@@ -8,11 +8,11 @@ public class TryRopeController : NetworkBehaviour {
 	/*Public Fields*/
 	[SyncVar]
 	public bool ropeActive;
-	[SyncVar (hook = "SetStartPosition")]
+	[SyncVar (hook = "HookSetStartPosition")]
 	public Vector2 startPosition;
-	[SyncVar (hook = "SetEndPosition")]
+	[SyncVar (hook = "HookSetEndPosition")]
 	public Vector2 endPosition;
-	[SyncVar (hook = "RenderLine")]
+	[SyncVar (hook = "HookRenderLine")]
 	public bool lineRendererEnable;
 	[SyncVar]
 	public Vector2 ropeJointAnchor;
@@ -41,6 +41,7 @@ public class TryRopeController : NetworkBehaviour {
 		lineRenderer = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		lineRenderer.enabled = false;
+		lineRenderer.positionCount = 2;
 		rope.enabled = false;
 		playerPosition = transform.position;
 		playerMovement = GetComponent<PlayerMovement>();
@@ -52,28 +53,45 @@ public class TryRopeController : NetworkBehaviour {
 		playerPosition = transform.position;
 		TouchDetection();
 		ifRopeActive();
-		SetRopeJoint();
-		SetStartEnd();
+		SetStartEnd();		
+	}
+
+	void LateUpdate() {
 		SetEnable();
-		CheckRender();
 		animateSwing();
 	}
 
 
+
+
+	/*
+	* Client method to check for rope
+	* Calls corresponding Client -> Server methods to update ropeActive boolean
+	*/
 	[Client]
-	void SetRopeJoint() {
+	void ifRopeActive() {
 		if (!isLocalPlayer) {
 			return;
 		}
 		if (rope.enabled) {
-			CmdSetRopeJoint();
+			CmdRopeActive();
+		} else {
+			CmdRopeNotActive();
 		}
 	}
 
+	/*
+	* Command methods to update ropeActive and send data to server
+	*/
 	[Command]
-	void CmdSetRopeJoint() {
-		ropeJointAnchor = rope.connectedAnchor;
+	void CmdRopeActive() {
+		ropeActive = true;
 	}
+	[Command]
+	void CmdRopeNotActive() {
+		ropeActive = false;
+	}
+	
 
 
 
@@ -83,12 +101,9 @@ public class TryRopeController : NetworkBehaviour {
 		if (!isLocalPlayer) {
 			return;
 		}
-		if (ropeActive) {
-			CmdSetEndPosition();
+		if (rope.enabled) {
 			CmdSetStartPosition();
-		} else {
-			CmdResetStartPosition();
-			CmdResetEndPosition();
+			CmdSetEndPosition(rope.connectedAnchor);
 		}
 	}
 
@@ -98,37 +113,29 @@ public class TryRopeController : NetworkBehaviour {
 	}
 
 	[Command]
-	void CmdResetStartPosition() {
-		startPosition = Vector2.zero;
-	}
-
-	[Command]
-	void CmdSetEndPosition() {
-		endPosition = ropeJointAnchor;
-	}
-
-	[Command]
-	void CmdResetEndPosition() {
-		endPosition = Vector2.zero;
+	void CmdSetEndPosition(Vector2 connectedAnchor) {
+		endPosition = connectedAnchor;
 	}
 
 	// HOOK
-	void SetStartPosition(Vector2 position) {
+	void HookSetStartPosition(Vector2 position) {
 		// Only update SyncVar if loacl client (it auto-updates in server/host)
 		if (!isServer) {
 			startPosition = position;
 		}
 		lineRenderer.SetPosition(0, startPosition);
+
 	}
 
 	// HOOK
-	void SetEndPosition(Vector2 position) {
+	void HookSetEndPosition(Vector2 position) {
 		// Only update SyncVar if loacl client (it auto-updates in server/host)
 		if (!isServer) {
 			endPosition = position;
 		}
-
-		lineRenderer.SetPosition(1, endPosition);
+		if (endPosition != Vector2.zero) {
+			lineRenderer.SetPosition(1, endPosition);
+		}
 	}
 
 	
@@ -157,47 +164,18 @@ public class TryRopeController : NetworkBehaviour {
 	}
 
 	// HOOK
-	void RenderLine(bool enable) {
-		// Only update SyncVar if loacl client (it auto-updates in server/host)
+	// Lets server see itself and client see server
+	void HookRenderLine(bool enable) {
+		// Only update SyncVar if local client (it auto-updates in server/host)
 		if (!isServer) {
 			lineRendererEnable = enable;		
 		}
-
+		
 		if (lineRendererEnable) {
 			lineRenderer.enabled = true;
 		} else {
 			lineRenderer.enabled = false;
 		}
-	}
-
-
-
-	void CheckRender() {
-		if (!isServer) {
-			return;
-		}
-
-		if (ropeActive) {
-			RpcRenderRope();
-		} else {
-			RpcUnrenderRope();
-		}
-	}
-
-	[ClientRpc]
-	void RpcRenderRope() {
-		if (isLocalPlayer) {
-			lineRenderer.SetPosition(0, startPosition);
-			lineRenderer.SetPosition(1, endPosition);
-			lineRenderer.enabled = true;
-		}
-	}
-
-	[ClientRpc]
-	void RpcUnrenderRope() {
-		if (isLocalPlayer) {
-			lineRenderer.enabled = false;
-		}	
 	}
 
 
@@ -244,17 +222,17 @@ public class TryRopeController : NetworkBehaviour {
 	void ShootRope(Vector2 touchPosition) {
 		Vector2 direction = touchPosition - playerPosition;
 
-		RaycastHit2D hit = Physics2D.Raycast (playerPosition, direction, 
+		RaycastHit2D hitWall = Physics2D.Raycast (playerPosition, direction, 
 							maxRopeDistance, 1 << LayerMask.NameToLayer("Wall"));
 
-		if (hit.collider != null) {
+		if (hitWall.collider != null) {
 
 			transform.GetComponent<Rigidbody2D>().AddForce(
 				new Vector2(0f, 4f), ForceMode2D.Impulse);
-			playerMovement.ropeHook = hit.point;
+			playerMovement.ropeHook = hitWall.point;
 			rope.enableCollision = true;
-			rope.distance = Vector2.Distance(playerPosition + ropeToHandOffset, hit.point);
-			rope.connectedAnchor = hit.point;
+			rope.distance = Vector2.Distance(playerPosition + ropeToHandOffset, hitWall.point);
+			rope.connectedAnchor = hitWall.point;
 			rope.enabled = true;
 			
 		}
@@ -268,41 +246,7 @@ public class TryRopeController : NetworkBehaviour {
 		rope.enabled = false;
 		rope.distance = 0f;
 		rope.connectedAnchor = Vector2.zero;
-
-		lineRenderer.enabled = false;
-		lineRenderer.positionCount = 2;
-		lineRenderer.SetPosition(0, playerPosition);
-		lineRenderer.SetPosition(1, playerPosition);
 		playerMovement.ropeHook = Vector2.zero;
-	}
-
-
-	/*
-	* Client method to check for rope
-	* Calls corresponding Client -> Server methods to update ropeActive boolean
-	*/
-	[Client]
-	void ifRopeActive() {
-		if (!isLocalPlayer) {
-			return;
-		}
-		if (rope.enabled) {
-			CmdRopeActive();
-		} else {
-			CmdRopeNotActive();
-		}
-	}
-
-	/*
-	* Command methods to update ropeActive and send data to server
-	*/
-	[Command]
-	void CmdRopeActive() {
-		ropeActive = true;
-	}
-	[Command]
-	void CmdRopeNotActive() {
-		ropeActive = false;
 	}
 
 
