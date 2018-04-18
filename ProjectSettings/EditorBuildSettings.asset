@@ -41,3 +41,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial6.unity
     guid: 4cecd80d2d5bc7541929499a7d3ad36f
+  - enabled: 1
+    path: Assets/Fit All Screen Size/Demo.unity
+    guid: 5a8600dd3b1ad3b448c4bec43a355fec
