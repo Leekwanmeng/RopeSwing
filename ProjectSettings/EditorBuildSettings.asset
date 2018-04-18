@@ -17,3 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NetworkMenu.unity
     guid: 1c14234f5ce18894887567171fba24f1
+  - enabled: 1
+    path: Assets/Scenes/GameLoss.unity
+    guid: 59f6b10faf86f5b488b95f844fcb0e54
+  - enabled: 1
+    path: Assets/Scenes/GameWin.unity
+    guid: fb286c6db71f56c419cbafc900ed54f8

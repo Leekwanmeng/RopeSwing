@@ -25,9 +25,9 @@ public class PlatformController : RaycastController
 
     public bool triggered = false;
     //public bool isMoving = false;
-    
-    
-
+    public bool fix = false;
+    private bool movedBefore = false;
+    private bool stop = false;
 
 
 
@@ -46,6 +46,12 @@ public class PlatformController : RaycastController
 
     private void Update()
     {
+
+        if(fix && stop)
+        {
+            enabled = false;
+        }
+
         //if (triggered) {
 
 
@@ -53,9 +59,12 @@ public class PlatformController : RaycastController
 
             Vector3 velocity = CalculatePlatformMovement();
 
-            CalculatePassengerMovement(velocity);
-
-            MovePassengers(true);
+            if (!fix)
+            {
+                CalculatePassengerMovement(velocity);
+                MovePassengers(true);
+            }
+            
             
                 
             transform.Translate(velocity);
@@ -75,12 +84,17 @@ public class PlatformController : RaycastController
     {
         if (Time.time < nextMoveTime)
         {
+            if (movedBefore)
+            {
+                stop = true;
+            }
             isMoving = false;
             return Vector3.zero;
         }
         else
         {
             isMoving = true;
+            movedBefore = true;
         }
         
         fromWaypointIndex %= globalWaypoints.Length;
