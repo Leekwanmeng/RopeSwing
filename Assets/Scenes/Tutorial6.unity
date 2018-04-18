@@ -113,17 +113,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1159010387
+--- !u!1 &156746990
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 1159010391}
-  - component: {fileID: 1159010390}
-  - component: {fileID: 1159010389}
-  - component: {fileID: 1159010388}
+  - component: {fileID: 156746994}
+  - component: {fileID: 156746993}
+  - component: {fileID: 156746992}
+  - component: {fileID: 156746991}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -131,26 +131,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1159010388
+--- !u!81 &156746991
 AudioListener:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1159010387}
+  m_GameObject: {fileID: 156746990}
   m_Enabled: 1
---- !u!124 &1159010389
+--- !u!124 &156746992
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1159010387}
+  m_GameObject: {fileID: 156746990}
   m_Enabled: 1
---- !u!20 &1159010390
+--- !u!20 &156746993
 Camera:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1159010387}
+  m_GameObject: {fileID: 156746990}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -181,12 +181,12 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1159010391
+--- !u!4 &156746994
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1159010387}
+  m_GameObject: {fileID: 156746990}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -194,7 +194,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1729090395
+--- !u!1001 &1225562267
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -290,6 +290,25 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114560562161847784, guid: a1899ab8765dc2a4f9e2738242c504ed,
+        type: 2}
+      propertyPath: m_Text
+      value: 5) Tap again to release rope
+      objectReference: {fileID: 0}
+    - target: {fileID: 114785483959936282, guid: a1899ab8765dc2a4f9e2738242c504ed,
+        type: 2}
+      propertyPath: m_Text
+      value: Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565989385157534, guid: a1899ab8765dc2a4f9e2738242c504ed, type: 2}
+      propertyPath: m_Name
+      value: BackToMain
+      objectReference: {fileID: 0}
+    - target: {fileID: 114646007268503116, guid: a1899ab8765dc2a4f9e2738242c504ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BackToMainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1899ab8765dc2a4f9e2738242c504ed, type: 2}
