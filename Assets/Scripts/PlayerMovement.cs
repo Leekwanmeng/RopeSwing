@@ -29,11 +29,12 @@ public class PlayerMovement : NetworkBehaviour {
 	private float distanceToCeiling = 1.6f;
 	private Vector2 ropeToHandOffset = new Vector2(0f, 0.5f);
 
-	private TryRopeController tryRopeController;
+	private RopeController ropeController;
 	private Rigidbody2D rb2d = null;
 	private Vector2 velocity;
  	private PlayerSyncSprite syncPos;
  	private Animator animator;
+ 	private float maxRopeDistance;
 
     // TESTING
 
@@ -75,10 +76,11 @@ public class PlayerMovement : NetworkBehaviour {
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
 		rb2d.velocity = Vector2.up * 5;		//gives it upward force
-		tryRopeController = gameObject.GetComponent<TryRopeController>();
+		ropeController = gameObject.GetComponent<RopeController>();
 		animator = GetComponent<Animator>();
 		facingRight = true;
 		syncPos = GetComponent<PlayerSyncSprite>();
+		maxRopeDistance = ropeController.maxRopeDistance;
 	}
 
 	// Update is called once per frame
@@ -97,9 +99,9 @@ public class PlayerMovement : NetworkBehaviour {
 
 	// Update per physics frame
 	void FixedUpdate() {
-		if (tryRopeController.ropeActive) {
+		if (ropeController.ropeActive) {
 			checkSwing();
-		} else if (!tryRopeController.ropeActive){ //&& isGrounded()) {
+		} else if (!ropeController.ropeActive){ //&& isGrounded()) {
 			checkWalk();
 		}
 	}
@@ -134,13 +136,13 @@ public class PlayerMovement : NetworkBehaviour {
     						distanceToCeiling, 1 << LayerMask.NameToLayer("Wall"));
 
 			if (hitCeiling.collider != null) return;
-			tryRopeController.rope.distance -= Time.deltaTime * climbStep;
+			ropeController.rope.distance -= Time.deltaTime * climbStep;
 			rb2d.AddForce(Vector2.up);
 		} else if (verticalInput < 0) {
 			RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
-			if (hitGround.collider != null) return;
-			tryRopeController.rope.distance += Time.deltaTime * climbStep;
+			if (hitGround.collider != null || ropeController.rope.distance > maxRopeDistance) return;
+			ropeController.rope.distance += Time.deltaTime * climbStep;
 			rb2d.AddForce(Vector2.down);
 		}
 		

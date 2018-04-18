@@ -26,7 +26,6 @@ GameObject:
   - component: {fileID: 114191107584651732}
   - component: {fileID: 114120334097520190}
   - component: {fileID: 114495967991157492}
-  - component: {fileID: 114693649017521968}
   - component: {fileID: 120754690892108498}
   - component: {fileID: 114226080213904944}
   - component: {fileID: 114190258571772022}
@@ -214,7 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dead: 0
---- !u!114 &114693649017521968
+--- !u!114 &114777010972455242
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -222,7 +221,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1451649781215020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e04d468ab98596d45b3d04b689d0097e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e6469b77c8ef284eac6a60a295c3b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ropeActive: 0
@@ -233,20 +232,6 @@ MonoBehaviour:
   rope: {fileID: 0}
   lineRenderer: {fileID: 0}
   ropeRendererPrefab: {fileID: 0}
---- !u!114 &114777010972455242
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1451649781215020}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e6469b77c8ef284eac6a60a295c3b5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 120754690892108498}
-  ropeActive: 0
-  linePrefab: {fileID: 1562362162329028, guid: 062f5e5b1b69b8f4d9a199f2c9bc544d, type: 2}
 --- !u!114 &114969717904397552
 MonoBehaviour:
   m_ObjectHideFlags: 1
