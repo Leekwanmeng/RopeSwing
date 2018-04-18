@@ -296,6 +296,11 @@ Prefab:
       propertyPath: m_Text
       value: 2) Tap walls to shoot rope
       objectReference: {fileID: 0}
+    - target: {fileID: 224705776962019220, guid: a1899ab8765dc2a4f9e2738242c504ed,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -520
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1899ab8765dc2a4f9e2738242c504ed, type: 2}
   m_IsPrefabParent: 0
