@@ -52,26 +52,22 @@ public class PlatformController : RaycastController
             enabled = false;
         }
 
-        //if (triggered) {
+        if (triggered) {
 
 
             UpdateRaycastOrigins();
 
             Vector3 velocity = CalculatePlatformMovement();
 
-            if (!fix)
-            {
-                CalculatePassengerMovement(velocity);
-                MovePassengers(true);
-            }
+            
             
             
                 
             transform.Translate(velocity);
-            MovePassengers(false);
+            
 
 
-        //}
+        }
     }
 
     private float Ease(float x)

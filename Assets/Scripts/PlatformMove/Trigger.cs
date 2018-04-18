@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
 
 public class Trigger : MonoBehaviour {
 
 
     public int triggerNumber;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -17,7 +18,7 @@ public class Trigger : MonoBehaviour {
             }
             else if(triggerNumber == 2)
             {
-                GameObject.Find("PlatformWithTrigger").GetComponent<PlatformController>().triggered = true;
+                GameObject.Find("TopDownMovingPlatform").GetComponent<PlatformController>().triggered = true;
             }
             else if(triggerNumber == 3)
             {
@@ -30,7 +31,10 @@ public class Trigger : MonoBehaviour {
             else if(triggerNumber == 5)
             {
                 //game win
-
+                SceneManager.LoadScene(5);
+            }else if (triggerNumber == 6)
+            {
+                //game loss
             }
 
 
