@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 8843d965a1888ba409513d24fe6213a4
-timeCreated: 1524039375
+timeCreated: 1524071472
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,13 +12,25 @@ TextureImporter:
     21300010: TileGround1
     21300012: TileGround2
     21300014: TileGroundRightCorner
-    21300016: groundtiletrigger_8
+    21300016: TileWallLong
     21300018: TileSideWall
     21300020: BackgroundTile1
     21300022: BackgroundTile2
-    21300024: groundtiletrigger_12
+    21300024: TileGroundCornerBig
     21300026: BackgroundTile3
-    21300028: groundtiletrigger_14
+    21300028: TileGroundLong
+    21300030: Spikes
+    21300032: MovingPlatform
+    21300034: Trigger
+    21300036: groundtiletrigger_3
+    21300038: TileGroundLeftCorner
+    21300040: TileGround1
+    21300042: TileGround2
+    21300044: TileGroundRightCorner
+    21300046: TileWall
+    21300048: Background1
+    21300050: Background2
+    21300052: Background3
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -108,26 +120,12 @@ TextureImporter:
       name: Spikes
       rect:
         serializedVersion: 2
-        x: 230
-        y: 292
-        width: 23
-        height: 34
+        x: 220
+        y: 286
+        width: 33
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: BackgroundTorch
-      rect:
-        serializedVersion: 2
-        x: 203
-        y: 241
-        width: 52
-        height: 43
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -141,7 +139,7 @@ TextureImporter:
         width: 206
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,7 +153,21 @@ TextureImporter:
         width: 47
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: groundtiletrigger_3
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 241
+        width: 52
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,7 +181,7 @@ TextureImporter:
         width: 28
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -183,7 +195,7 @@ TextureImporter:
         width: 27
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,7 +209,7 @@ TextureImporter:
         width: 23
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -211,13 +223,13 @@ TextureImporter:
         width: 28
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: groundtiletrigger_8
+      name: TileWallLong
       rect:
         serializedVersion: 2
         x: 477
@@ -225,13 +237,13 @@ TextureImporter:
         width: 28
         height: 112
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: TileSideWall
+      name: TileWall
       rect:
         serializedVersion: 2
         x: 171
@@ -239,13 +251,13 @@ TextureImporter:
         width: 28
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: BackgroundTile1
+      name: Background1
       rect:
         serializedVersion: 2
         x: 206
@@ -253,13 +265,13 @@ TextureImporter:
         width: 26
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: BackgroundTile2
+      name: Background2
       rect:
         serializedVersion: 2
         x: 239
@@ -267,13 +279,13 @@ TextureImporter:
         width: 26
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: groundtiletrigger_12
+      name: TileGroundCornerBig
       rect:
         serializedVersion: 2
         x: 361
@@ -281,13 +293,13 @@ TextureImporter:
         width: 78
         height: 84
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: BackgroundTile3
+      name: Background3
       rect:
         serializedVersion: 2
         x: 223
@@ -295,13 +307,13 @@ TextureImporter:
         width: 30
         height: 36
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: groundtiletrigger_14
+      name: TileGroundLong
       rect:
         serializedVersion: 2
         x: 309
@@ -309,7 +321,7 @@ TextureImporter:
         width: 300
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
