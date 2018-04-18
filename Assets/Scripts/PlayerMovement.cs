@@ -239,9 +239,7 @@ public class PlayerMovement : NetworkBehaviour {
         
         if (coll.gameObject.tag == "MovingPlatform")
         {
-            
-            Debug.Log("works a bit");
-            
+
             transform.SetParent(coll.gameObject.transform, true);
         }
         

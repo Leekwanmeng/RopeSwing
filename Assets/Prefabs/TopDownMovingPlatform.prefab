@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 114708432816629612}
   - component: {fileID: 114887786257460070}
   m_Layer: 10
-  m_Name: Moving Platform
+  m_Name: TopDownMovingPlatform
   m_TagString: MovingPlatform
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -151,8 +151,8 @@ MonoBehaviour:
     m_Bits: 512
   isMoving: 0
   localWaypoints:
-  - {x: -2.5, y: 0, z: 0}
-  - {x: 2.5, y: 0, z: 0}
+  - {x: 0, y: 3, z: 0}
+  - {x: 0, y: -3, z: 0}
   speed: 4
   cyclic: 0
   waitTime: 1
@@ -173,22 +173,22 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 216
-    i1: 188
-    i2: 202
-    i3: 159
-    i4: 174
+    i0: 63
+    i1: 131
+    i2: 238
+    i3: 138
+    i4: 22
     i5: 184
-    i6: 209
+    i6: 181
     i7: 228
-    i8: 200
-    i9: 4
-    i10: 245
-    i11: 226
-    i12: 177
-    i13: 226
-    i14: 38
-    i15: 48
+    i8: 88
+    i9: 112
+    i10: 239
+    i11: 244
+    i12: 131
+    i13: 229
+    i14: 9
+    i15: 202
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
 --- !u!114 &114887786257460070
