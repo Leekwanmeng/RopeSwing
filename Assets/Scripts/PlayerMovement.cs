@@ -99,7 +99,7 @@ public class PlayerMovement : NetworkBehaviour {
 	void FixedUpdate() {
 		if (tryRopeController.ropeActive) {
 			checkSwing();
-		} else if (!tryRopeController.ropeActive && isGrounded()) {
+		} else if (!tryRopeController.ropeActive){ //&& isGrounded()) {
 			checkWalk();
 		}
 	}
@@ -230,5 +230,34 @@ public class PlayerMovement : NetworkBehaviour {
     		animator.SetBool("grounded", false);
     	}
     }
+
+    
+
+    //make player follow moving platform
+    void OnCollisionStay2D(Collision2D coll)
+    {
+        
+        if (coll.gameObject.tag == "MovingPlatform")
+        {
+            
+            Debug.Log("works a bit");
+            
+            transform.SetParent(coll.gameObject.transform, true);
+        }
+        
+
+    }
+    
+
+    void OnCollisionExit2D(Collision2D coll)
+    {
+
+        if (coll.gameObject.tag == "MovingPlatform")
+        {
+            transform.parent = null;
+        }
+
+    }
+    
 
 }

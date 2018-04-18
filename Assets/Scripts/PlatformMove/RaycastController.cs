@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class RaycastController : MonoBehaviour

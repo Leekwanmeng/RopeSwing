@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class PlatformController : RaycastController
 {
-    public LayerMask passengerMask;
 
+   
+    public LayerMask passengerMask;
+    public bool isMoving = false;
     public Vector3[] localWaypoints;
     private Vector3[] globalWaypoints;
 
@@ -22,6 +24,13 @@ public class PlatformController : RaycastController
     private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
     public bool triggered = false;
+    //public bool isMoving = false;
+    
+    
+
+
+
+
 
 
     public override void Start()
@@ -37,7 +46,7 @@ public class PlatformController : RaycastController
 
     private void Update()
     {
-        if (triggered) {
+        //if (triggered) {
 
 
             UpdateRaycastOrigins();
@@ -47,11 +56,13 @@ public class PlatformController : RaycastController
             CalculatePassengerMovement(velocity);
 
             MovePassengers(true);
+            
+                
             transform.Translate(velocity);
             MovePassengers(false);
 
 
-        }
+        //}
     }
 
     private float Ease(float x)
@@ -64,9 +75,14 @@ public class PlatformController : RaycastController
     {
         if (Time.time < nextMoveTime)
         {
+            isMoving = false;
             return Vector3.zero;
         }
-
+        else
+        {
+            isMoving = true;
+        }
+        
         fromWaypointIndex %= globalWaypoints.Length;
         int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
         float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
@@ -90,7 +106,7 @@ public class PlatformController : RaycastController
                     System.Array.Reverse(globalWaypoints);
                 }
             }
-
+            
             nextMoveTime = Time.time + waitTime;
         }
 

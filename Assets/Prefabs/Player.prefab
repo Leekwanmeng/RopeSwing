@@ -32,7 +32,6 @@ GameObject:
   - component: {fileID: 114190258571772022}
   - component: {fileID: 114969717904397552}
   - component: {fileID: 95896327028330098}
-  - component: {fileID: 114791352277101890}
   - component: {fileID: 232437287290108010}
   m_Layer: 9
   m_Name: Player
@@ -248,27 +247,6 @@ MonoBehaviour:
   lineRenderer: {fileID: 120754690892108498}
   ropeActive: 0
   linePrefab: {fileID: 1562362162329028, guid: 062f5e5b1b69b8f4d9a199f2c9bc544d, type: 2}
---- !u!114 &114791352277101890
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1451649781215020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48bb9ad465d88c44fa60040a6f7d4a2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 0
-  horizontalRayCount: 0
-  verticalRayCount: 0
-  horizontalRaySpacing: 0
-  verticalRaySpacing: 0
-  coll: {fileID: 0}
-  fallingThroughPlatformResetTimer: 0.1
-  playerInput: {x: 0, y: 0}
 --- !u!114 &114969717904397552
 MonoBehaviour:
   m_ObjectHideFlags: 1

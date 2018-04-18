@@ -7,6 +7,7 @@ TagManager:
   - Foreground
   - Background
   - DeathZone
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Player
   - Ground
   - Rope
-  - 
-  - 
+  - Platform
+  - Falling
   - 
   - 
   - 
