@@ -14,11 +14,11 @@ public class Trigger : MonoBehaviour {
         {
             if(triggerNumber == 1)
             {
-                GameObject.Find("FirstPlatform").GetComponent<PlatformController>().triggered = true;
+                GameObject.Find("MovingPlatform0").GetComponent<PlatformController>().triggered = true;
             }
             else if(triggerNumber == 2)
             {
-                GameObject.Find("TopDownMovingPlatform").GetComponent<PlatformController>().triggered = true;
+                GameObject.Find("MovingPlatform1").GetComponent<PlatformController>().triggered = true;
             }
             else if(triggerNumber == 3)
             {
@@ -49,11 +49,11 @@ public class Trigger : MonoBehaviour {
     {
         if (triggerNumber == 1)
         {
-            GameObject.Find("FirstPlatform").GetComponent<PlatformController>().triggered = false;
+            GameObject.Find("MovingPlatform0").GetComponent<PlatformController>().triggered = false;
         }
         else if (triggerNumber == 2)
         {
-            GameObject.Find("PlatformWithTrigger").GetComponent<PlatformController>().triggered = false;
+            GameObject.Find("MovingPlatform1").GetComponent<PlatformController>().triggered = false;
         }
         else if (triggerNumber == 3)
         {
