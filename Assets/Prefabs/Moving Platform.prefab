@@ -147,11 +147,11 @@ MonoBehaviour:
     m_Bits: 0
   isMoving: 0
   localWaypoints:
-  - {x: -2.5, y: 0, z: 0}
-  - {x: 2.5, y: 0, z: 0}
+  - {x: -2.8, y: 0, z: 0}
+  - {x: 2.6, y: 0, z: 0}
   speed: 4
   cyclic: 0
-  waitTime: 1
+  waitTime: 2
   easeAmount: 0
   triggered: 1
   fix: 0
