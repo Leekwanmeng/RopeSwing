@@ -13418,11 +13418,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4845342905194422, guid: 8e53f0782ab1f3a408a9f29a02b68db4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -32.96
+      value: -32.53
       objectReference: {fileID: 0}
     - target: {fileID: 4845342905194422, guid: 8e53f0782ab1f3a408a9f29a02b68db4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -28.58
+      value: -28.19
       objectReference: {fileID: 0}
     - target: {fileID: 4845342905194422, guid: 8e53f0782ab1f3a408a9f29a02b68db4, type: 2}
       propertyPath: m_LocalPosition.z
@@ -13467,6 +13467,12 @@ Prefab:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.15625
       objectReference: {fileID: 0}
+    - target: {fileID: 212787665745598278, guid: 8e53f0782ab1f3a408a9f29a02b68db4,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 795ecbf7cc20abd4aa84c6eb1ba49a77,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e53f0782ab1f3a408a9f29a02b68db4, type: 2}
   m_IsPrefabParent: 0
