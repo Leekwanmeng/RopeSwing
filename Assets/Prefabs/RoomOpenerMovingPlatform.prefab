@@ -52,6 +52,8 @@ GameObject:
   - component: {fileID: 4752968988124272}
   - component: {fileID: 61261481602687146}
   - component: {fileID: 114518882283623366}
+  - component: {fileID: 114003939674296098}
+  - component: {fileID: 114430535535804686}
   m_Layer: 10
   m_Name: RoomOpenerMovingPlatform
   m_TagString: Untagged
@@ -125,6 +127,59 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 16}
   m_EdgeRadius: 0
+--- !u!114 &114003939674296098
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1541500674668336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 116
+    i1: 82
+    i2: 179
+    i3: 37
+    i4: 41
+    i5: 246
+    i6: 41
+    i7: 212
+    i8: 170
+    i9: 229
+    i10: 216
+    i11: 72
+    i12: 144
+    i13: 131
+    i14: 92
+    i15: 245
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114430535535804686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1541500674668336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114518882283623366
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -31,9 +31,11 @@ public class Trigger : MonoBehaviour {
             else if(triggerNumber == 5)
             {
                 //game win
-                SceneManager.LoadScene(5);
+                SceneManager.LoadScene("GameWin");
             }else if (triggerNumber == 6)
             {
+
+
                 //game loss
             }
 
