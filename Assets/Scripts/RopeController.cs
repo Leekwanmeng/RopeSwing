@@ -52,6 +52,7 @@ public class RopeController : NetworkBehaviour {
 	void Update () {
 		playerPosition = transform.position;
 		TouchDetection();
+		CheckRopeLength();
 		ifRopeActive();
 		SetStartEnd();		
 	}
@@ -90,6 +91,14 @@ public class RopeController : NetworkBehaviour {
 	[Command]
 	void CmdRopeNotActive() {
 		ropeActive = false;
+	}
+
+	void CheckRopeLength() {
+		if (rope.enabled) {
+			if (rope.distance > maxRopeDistance) {
+				rope.enabled = false;
+			}
+		}
 	}
 	
 

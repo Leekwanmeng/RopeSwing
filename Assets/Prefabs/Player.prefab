@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 2
-  m_SendInterval: 0.06666667
+  m_SendInterval: 0.11111111
   m_SyncRotationAxis: 3
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -232,6 +232,7 @@ MonoBehaviour:
   rope: {fileID: 0}
   lineRenderer: {fileID: 0}
   ropeRendererPrefab: {fileID: 0}
+  maxRopeDistance: 10
 --- !u!114 &114969717904397552
 MonoBehaviour:
   m_ObjectHideFlags: 1
