@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/*
+* Script attached to text object to display values on mobile
+* Used during bug fixing process
+* NOT USED FOR ANY ACTUAL GAMEPLAY
+*/
 public class TestTouch : MonoBehaviour {
 
 	public Text Text1;

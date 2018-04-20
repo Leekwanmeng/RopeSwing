@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 
-public class TryRopeController : NetworkBehaviour {
+public class RopeController : NetworkBehaviour {
 
 	/*Public Fields*/
 	[SyncVar]
@@ -20,6 +20,7 @@ public class TryRopeController : NetworkBehaviour {
 	public DistanceJoint2D rope;
 	public LineRenderer lineRenderer;
 	public GameObject ropeRendererPrefab;
+	public float maxRopeDistance = 10f;
 	
 
 	/*Private Fields*/
@@ -29,9 +30,11 @@ public class TryRopeController : NetworkBehaviour {
 	private PlayerMovement playerMovement;
 	private GameObject ropeRendererObject;
 	private LineRenderer ropeRenderer;
-	private float maxRopeDistance = 10f;
 	private Vector2 ropeToHandOffset = new Vector2(0f, 0.5f);
 
+	/*
+	* Sets camera to each local player
+	*/
 	public override void OnStartLocalPlayer() {
          Camera.main.GetComponent<SmoothCamera>().setPlayer(gameObject);
     }
@@ -52,10 +55,12 @@ public class TryRopeController : NetworkBehaviour {
 	void Update () {
 		playerPosition = transform.position;
 		TouchDetection();
+		CheckRopeLength();
 		ifRopeActive();
 		SetStartEnd();		
 	}
 
+	// Last update
 	void LateUpdate() {
 		SetEnable();
 		animateSwing();
@@ -81,7 +86,7 @@ public class TryRopeController : NetworkBehaviour {
 	}
 
 	/*
-	* Command methods to update ropeActive and send data to server
+	* Command methods to update ropeActive on server
 	*/
 	[Command]
 	void CmdRopeActive() {
@@ -91,11 +96,22 @@ public class TryRopeController : NetworkBehaviour {
 	void CmdRopeNotActive() {
 		ropeActive = false;
 	}
+
+	void CheckRopeLength() {
+		if (rope.enabled) {
+			if (rope.distance > maxRopeDistance) {
+				rope.enabled = false;
+			}
+		}
+	}
 	
 
-
-
-
+	/*
+	* Client method to set start and end positions of rope
+	* 
+	* Calls corresponding Client -> Server methods 
+	* to update Vector2 startPosition and endPosition
+	*/
 	[Client]
 	void SetStartEnd() {
 		if (!isLocalPlayer) {
@@ -107,17 +123,28 @@ public class TryRopeController : NetworkBehaviour {
 		}
 	}
 
+	/*
+	* Command methods to update startPosition and endPosition on server
+	*/
 	[Command]
 	void CmdSetStartPosition() {
 		startPosition = playerPosition + ropeToHandOffset;
 	}
 
+	/*
+	* @param connectedAnchor position from rope
+	*/
 	[Command]
 	void CmdSetEndPosition(Vector2 connectedAnchor) {
 		endPosition = connectedAnchor;
 	}
 
-	// HOOK
+	/*
+	* Hook method called whenever startPosition changes in value
+	* startPosition auto-updates to new value on server, else have to manually assign position to startPosition
+	* 
+	* @param New value of start position
+	*/
 	void HookSetStartPosition(Vector2 position) {
 		// Only update SyncVar if loacl client (it auto-updates in server/host)
 		if (!isServer) {
@@ -127,7 +154,12 @@ public class TryRopeController : NetworkBehaviour {
 
 	}
 
-	// HOOK
+	/*
+	* Hook method called whenever endPosition changes in value
+	* endPosition auto-updates to new value on server, else have to manually assign position to endPosition
+	* 
+	* @param New value of end position
+	*/
 	void HookSetEndPosition(Vector2 position) {
 		// Only update SyncVar if loacl client (it auto-updates in server/host)
 		if (!isServer) {
@@ -140,7 +172,12 @@ public class TryRopeController : NetworkBehaviour {
 
 	
 
-
+	/*
+	* Client method to set enable of LineRenderer
+	* 
+	* Calls corresponding Client -> Server methods 
+	* to update bool lineRendererEnable
+	*/
 	[Client]
 	void SetEnable() {
 		if (!isLocalPlayer) {
@@ -153,6 +190,9 @@ public class TryRopeController : NetworkBehaviour {
 		}
 	}
 
+	/*
+	* Command methods to update lineRendererEnable on server
+	*/
 	[Command]
 	void CmdLineRendererEnable() {
 		lineRendererEnable = true;
@@ -163,8 +203,12 @@ public class TryRopeController : NetworkBehaviour {
 		lineRendererEnable = false;
 	}
 
-	// HOOK
-	// Lets server see itself and client see server
+	/*
+	* Hook method called whenever lineRendererEnable changes in value
+	* lineRendererEnable auto-updates to new value on server, else have to manually assign position to lineRendererEnable
+	* 
+	* @param New value of lineRenderer.enabled
+	*/
 	void HookRenderLine(bool enable) {
 		// Only update SyncVar if local client (it auto-updates in server/host)
 		if (!isServer) {

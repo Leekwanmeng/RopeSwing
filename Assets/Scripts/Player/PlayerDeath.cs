@@ -9,6 +9,10 @@ public class PlayerDeath : NetworkBehaviour {
 	[SyncVar]
 	public bool dead;
 
+	/*
+	* Upon entering DeathZone trigger
+	* Applies to spikes and falling off the map
+	*/
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.CompareTag("DeathZone")) {
 			setDeath();
@@ -16,6 +20,10 @@ public class PlayerDeath : NetworkBehaviour {
 		}
 	}
 
+	/*
+	* Server method call
+	* Checks death and executes client RPC (RPC runs on client)
+	*/
 	void checkDeath() {
 		if (!isServer) {
 			return;
@@ -26,15 +34,24 @@ public class PlayerDeath : NetworkBehaviour {
 
 	}
 
+	/*
+	* Local method call
+	*/
 	void setDeath() {
 		CmdSetDead();
 	}
 
+	/*
+	* Command method, runs on server to update SyncVar dead
+	*/
 	[Command]
 	void CmdSetDead() {
 		dead = true;
 	}
 
+	/*
+	* Command method, runs on server to update SyncVar dead
+	*/
 	[Command]
 	void CmdSetNotDead() {
 		dead = false;

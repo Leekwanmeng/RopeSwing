@@ -129,7 +129,11 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 	}
 
-
+	/*
+	* Called to determine if player can climb
+	* Lengthens / reduces rope.distance to simulate climbing based on vertical tilt
+	* Pre-condition: Player on rope
+	*/
 	void checkClimb() {
 		if (verticalInput > 0) {
 			RaycastHit2D hitCeiling = Physics2D.Raycast(transform.position, Vector2.up, 
@@ -137,17 +141,26 @@ public class PlayerMovement : NetworkBehaviour {
 
 			if (hitCeiling.collider != null) return;
 			ropeController.rope.distance -= Time.deltaTime * climbStep;
+
+			// Force to add slight player movement for NetworkTransform sync
 			rb2d.AddForce(Vector2.up);
 		} else if (verticalInput < 0) {
 			RaycastHit2D hitGround = Physics2D.Raycast(transform.position, Vector2.down, 
     						distanceToGround, 1 << LayerMask.NameToLayer("Ground"));
 			if (hitGround.collider != null || ropeController.rope.distance > maxRopeDistance) return;
 			ropeController.rope.distance += Time.deltaTime * climbStep;
+
+			// Force to add slight player movement for NetworkTransform sync
 			rb2d.AddForce(Vector2.down);
 		}
 		
 	}
 
+	/*
+	* Called to determine if player can swing
+	* Adds perpendicular force left and right based on horizontal tilt
+	* Pre-condition: Player on rope
+	*/
 	void checkSwing() {
 		if (ropeHook != Vector2.zero) {
 			Vector2 playerToHookDirection = (ropeHook - (Vector2) transform.position).normalized;
@@ -163,12 +176,12 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 	}
 
+	/*
+	* Called to determine if player can walk
+	* Adds force left and right based on horizontal tilt
+	* Pre-condition: Player is grounded
+	*/
 	void checkWalk() {
-		// if (horizontalInput > 0) {
-		// 	rb2d.AddForce(Vector2.right * walkForce);
-		// } else if (horizontalInput < 0) {
-		// 	rb2d.AddForce(Vector2.left * walkForce);
-		// }
 		if (horizontalInput != 0 && rb2d.velocity.x < maxWalkSpeed) {
 	        rb2d.AddForce(new Vector2((horizontalInput * walkForce - rb2d.velocity.x) * 10f, 0f));
 	        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
@@ -177,6 +190,7 @@ public class PlayerMovement : NetworkBehaviour {
 
 	/*
 	* Checks player's horizontal movement and determines if player should flip
+	* Calls public method in PlayerSyncSprite to send flip sprite on server side
 	*/
 	public void checkPlayerDirection() {
 		if ((velocity.x > 0.1f && !facingRight) || (velocity.x < 0.1f && facingRight)) {
@@ -185,10 +199,7 @@ public class PlayerMovement : NetworkBehaviour {
 		}
 	}
 
-
-	//////////////////////////////////
-	//////////// OBSOLETE ////////////
-	//////////////////////////////////
+	// For testing
 	[Client]
     public void flipSprite() {
 		Vector3 theScale = transform.localScale;
@@ -221,10 +232,16 @@ public class PlayerMovement : NetworkBehaviour {
     	return false;
     }
 
+    /*
+	* Sets values for player animation
+	*/
     void animateMovement() {
     	animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxWalkSpeed);
     }
 
+    /*
+	* Sets values for player animation
+	*/
     void animateGround() {
     	if (isGrounded()) {
     		animator.SetBool("grounded", true);
