@@ -2,7 +2,9 @@
 
 ## INTRODUCTION
 **UNRELEASED GAME** (developed for school project with no further continuation...)
+
 RopeSwing is a 2 Player Co-op 2D Platformer Game.
+
 Team up with a friend and scale obstacles to reach the goal!
 
 Available on mobile only.
