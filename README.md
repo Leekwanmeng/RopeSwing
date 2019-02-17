@@ -9,8 +9,6 @@ Team up with a friend and scale obstacles to reach the goal!
 
 Available on mobile only.
 
-[Trailer](https://www.youtube.com/watch?v=L1ERb9MkepQ)
-
 
 ## HOW TO PLAY
 - Each player controls a character
